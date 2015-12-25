@@ -9,6 +9,8 @@
 import UIKit
 
 class LoginViewController: UIViewController {
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +23,8 @@ class LoginViewController: UIViewController {
         
         //Setup navigationItem for ViewController
         self.navigationItem.title = "Sign In"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Log in", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logInUser"))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(title: "Register", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerNewUser"))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log in", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logInUser"))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Register", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerNewUser"))
     }
 
     func logInUser(){
@@ -31,6 +33,13 @@ class LoginViewController: UIViewController {
     
     func registerNewUser(){
         print("Register new user in process...")
+        performSegueWithIdentifier("registerUserSegue", sender: self)
+    }
+    @IBAction func loginToFacebook(sender: AnyObject) {
+        print("Logging in to Facebook")
+    }
+    @IBAction func loginToGooglePlus(sender: AnyObject) {
+        print("Logging in to Google+")
     }
 }
 
