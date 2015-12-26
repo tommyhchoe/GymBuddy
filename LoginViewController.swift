@@ -18,9 +18,20 @@ class LoginViewController: UIViewController {
         self.configView()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewWillAppear(false)
+        
+        //Make navigationItem title reappear
+        self.navigationItem.title = "Sign In"
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "registerUserSegue"){
-            
+            self.navigationItem.title = nil
+        }
+        
+        if (segue.identifier == "retrieveUserInfoSegue"){
+            self.navigationItem.title = nil
         }
     }
     
@@ -42,10 +53,13 @@ class LoginViewController: UIViewController {
     }
 
     func logInUser(){
+        //TODO: Check if all fields are entered for all appropriate UITextFields
         print("Verifying user credentials...")
     }
     
     func registerNewUser(){
+        
+        //TODO: Send user info via segue
         print("Register new user in process...")
         performSegueWithIdentifier("registerUserSegue", sender: self)
     }
@@ -56,6 +70,9 @@ class LoginViewController: UIViewController {
     }
     @IBAction func loginToGooglePlus(sender: AnyObject) {
         print("Logging in to Google+")
+    }
+    @IBAction func retrieveUserInfo(sender: AnyObject) {
+    performSegueWithIdentifier("retrieveUserInfoSegue", sender: self)
     }
 }
 
