@@ -18,8 +18,22 @@ class LoginViewController: UIViewController {
         self.configView()
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if (segue.identifier == "registerUserSegue"){
+            
+        }
+    }
+    
     //MARK: - Helper Methods
     func configView(){
+        
+        //Add indent to each TextField
+        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        usernameTextField.leftView = paddingView1
+        usernameTextField.leftViewMode = UITextFieldViewMode.Always
+        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        passwordTextField.leftView = paddingView2
+        passwordTextField.leftViewMode = UITextFieldViewMode.Always
         
         //Setup navigationItem for ViewController
         self.navigationItem.title = "Sign In"
@@ -35,6 +49,8 @@ class LoginViewController: UIViewController {
         print("Register new user in process...")
         performSegueWithIdentifier("registerUserSegue", sender: self)
     }
+    
+    //MARK: - IBAction Methods
     @IBAction func loginToFacebook(sender: AnyObject) {
         print("Logging in to Facebook")
     }

@@ -24,6 +24,25 @@ class RegisterViewController: UIViewController {
     }
     
     func configView(){
+        
+        //Add indent to each TextField
+        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        emailTextField.leftView = paddingView1
+        emailTextField.leftViewMode = UITextFieldViewMode.Always
+        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        displayNameTextField.leftView = paddingView2
+        displayNameTextField.leftViewMode = UITextFieldViewMode.Always
+        let paddingView3 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        passwordTextField.leftView = paddingView3
+        passwordTextField.leftViewMode = UITextFieldViewMode.Always
+        let paddingView4 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        genderTextField.leftView = paddingView4
+        genderTextField.leftViewMode = UITextFieldViewMode.Always
+        let paddingView5 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        ageTextField.leftView = paddingView5
+        ageTextField.leftViewMode = UITextFieldViewMode.Always
+        
+        //Setup navigationItem
         self.navigationItem.title = "Register"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("loginAsNewUser"))
     }
@@ -35,7 +54,20 @@ class RegisterViewController: UIViewController {
     @IBAction func changeProfileImage(sender: AnyObject) {
         print("Change the profile image")
     }
-    
-    
-    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
