@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
@@ -18,12 +18,16 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var ageTextField: UITextField!
     
-    let imageFilename: String = "Icon-72"
+    let imageFilename: String = "Icon-73"
     var didChangeImage = false
     var userDatabase: UserDatabase?
     
+    let imagePicker = UIImagePickerController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.imagePicker.delegate = self
         
         self.configView()
     }
@@ -87,6 +91,7 @@ class RegisterViewController: UIViewController {
         }else if (genderTextField.text == ""){
             print("Missing gender")
         }else{
+            //Store new user info in UserDatabase
             userDatabase = UserDatabase(username: usernameTextField.text!, displayName: displayNameTextField.text!, email: emailTextField.text!, profilePic: self.imageFilename, password: passwordTextField.text!, age: ageTextField.text!, gender: genderTextField.text!)
             if let username = userDatabase!.userDictionary["username"], displayName = userDatabase!.userDictionary["displayName"], email = userDatabase!.userDictionary["email"], password = userDatabase!.userDictionary["password"], age = userDatabase!.userDictionary["age"], gender = userDatabase!.userDictionary["gender"], profilePic = userDatabase!.userDictionary["profilePic"]{
                 
@@ -98,8 +103,23 @@ class RegisterViewController: UIViewController {
     
     @IBAction func changeProfileImage(sender: AnyObject) {
         print("Change the profile image")
-        didChangeImage = true
+        //prepare UIImagePickerController to be displayed with the appropriate settings
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        
+        presentViewController(imagePicker, animated: true, completion: nil)
     }
+    
+    //MARK: - UIImagePickerControllerDelegate Methods
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        
+        imageButton.setImage(image, forState: UIControlState.Normal)
+        didChangeImage = true
+        imageButton.imageView!.contentMode = .ScaleAspectFill
+        
+        dismissViewControllerAnimated(false, completion: nil)
+    }
+    
 }
 
 

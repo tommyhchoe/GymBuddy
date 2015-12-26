@@ -31,7 +31,11 @@ class ForgotViewController: UIViewController {
     }
     
     func sendUserInfoByEmail(){
-        print("Sending user info. Thanks!")
+        if (emailTextField.text != ""){
+            print("Sending user info. Thanks!")
+        }else{
+            print("You didn't enter your email")
+        }
     }
 }
 
