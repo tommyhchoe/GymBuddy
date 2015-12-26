@@ -33,6 +33,14 @@ class LoginViewController: UIViewController {
         if (segue.identifier == "retrieveUserInfoSegue"){
             self.navigationItem.title = nil
         }
+        
+        if (segue.identifier == "loginUserSegue"){
+            if let dvc = segue.destinationViewController as? MainViewController{
+                dvc.navigationItem.title = "Home"
+                dvc.navigationItem.setHidesBackButton(true, animated: false)
+            }
+            print("Successful verification!")
+        }
     }
     
     //MARK: - Helper Methods
@@ -53,8 +61,19 @@ class LoginViewController: UIViewController {
     }
 
     func logInUser(){
-        //TODO: Check if all fields are entered for all appropriate UITextFields
-        print("Verifying user credentials...")
+
+        if (usernameTextField.text == ""){
+            print("Username not entered!")
+        }else if (passwordTextField.text == ""){
+            print("Password not entered!")
+        }else{
+            print("Verifying user credentials...")
+            if (self.usernameTextField.text == "tchoe") && (self.passwordTextField.text == "whyyoualwayslying1234"){
+                performSegueWithIdentifier("loginUserSegue", sender: self)
+            }else{
+                print("Wrong username/password combination")
+            }
+        }
     }
     
     func registerNewUser(){
@@ -72,7 +91,7 @@ class LoginViewController: UIViewController {
         print("Logging in to Google+")
     }
     @IBAction func retrieveUserInfo(sender: AnyObject) {
-    performSegueWithIdentifier("retrieveUserInfoSegue", sender: self)
+        performSegueWithIdentifier("retrieveUserInfoSegue", sender: self)
     }
 }
 
