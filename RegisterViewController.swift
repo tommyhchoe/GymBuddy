@@ -39,6 +39,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         
         self.configView()
         self.registerForKeyboardNotifications()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         self.resetScrollView()
     }
     
