@@ -8,8 +8,9 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
+    @IBOutlet weak var wrapperScrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -23,13 +24,22 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     var userDatabase: UserDatabase?
     
     let imagePicker = UIImagePickerController()
+    var activeField: UITextField?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.imagePicker.delegate = self
+        self.usernameTextField.delegate = self
+        self.emailTextField.delegate = self
+        self.displayNameTextField.delegate = self
+        self.passwordTextField.delegate = self
+        self.genderTextField.delegate = self
+        self.ageTextField.delegate = self
         
         self.configView()
+        self.registerForKeyboardNotifications()
+        self.resetScrollView()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -73,6 +83,53 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("loginAsNewUser"))
     }
     
+    func resetScrollView(){
+        let contentInsets: UIEdgeInsets = UIEdgeInsetsZero
+        self.wrapperScrollView.contentInset = contentInsets
+        self.wrapperScrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    //Mark: - Keyboard Delegate Methods
+    
+    //Call this method somewhere in your view controller setup code.
+    func registerForKeyboardNotifications(){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWasShown:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillBeHidden:"), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    //Called when the UIKeyboardDidShowNotification is sent.
+    func keyboardWasShown(aNotification: NSNotification){
+        let info: NSDictionary = aNotification.userInfo!
+        let kbSize: CGSize? = info.objectForKey(UIKeyboardFrameBeginUserInfoKey)?.CGRectValue.size
+        let contentInsets: UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize!.height, 0.0)
+        self.wrapperScrollView.contentInset = contentInsets
+        self.wrapperScrollView.scrollIndicatorInsets = contentInsets
+        
+        //If active text is invisible, scroll it so it's visible
+        var aRect: CGRect = self.view.frame
+        aRect.size.height -= kbSize!.height
+        if let activeFieldPresent = activeField{
+            if (!CGRectContainsPoint(aRect, activeFieldPresent.frame.origin)){
+                self.wrapperScrollView.scrollRectToVisible(activeFieldPresent.frame, animated: true)
+            }
+        }
+    }
+    
+    //Called when the UIKeyboardDidShowNotification is sent.
+    func keyboardWillBeHidden(aNotification: NSNotification){
+        let contentInsets: UIEdgeInsets = UIEdgeInsetsZero
+        self.wrapperScrollView.contentInset = contentInsets
+        self.wrapperScrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField){
+        activeField = textField
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField){
+        activeField = nil
+    }
+    
     func loginAsNewUser(){
         
         //Check if any TextFields are empty
@@ -91,6 +148,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         }else if (genderTextField.text == ""){
             print("Missing gender")
         }else{
+            
             //Store new user info in UserDatabase
             userDatabase = UserDatabase(username: usernameTextField.text!, displayName: displayNameTextField.text!, email: emailTextField.text!, profilePic: self.imageFilename, password: passwordTextField.text!, age: ageTextField.text!, gender: genderTextField.text!)
             if let username = userDatabase!.userDictionary["username"], displayName = userDatabase!.userDictionary["displayName"], email = userDatabase!.userDictionary["email"], password = userDatabase!.userDictionary["password"], age = userDatabase!.userDictionary["age"], gender = userDatabase!.userDictionary["gender"], profilePic = userDatabase!.userDictionary["profilePic"]{
@@ -119,7 +177,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         
         dismissViewControllerAnimated(false, completion: nil)
     }
-    
 }
 
 
