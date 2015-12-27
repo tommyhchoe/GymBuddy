@@ -35,11 +35,10 @@ class LoginViewController: UIViewController {
         }
         
         if (segue.identifier == "loginUserSegue"){
-            if let dvc = segue.destinationViewController as? MainViewController{
+            if let dvc = segue.destinationViewController as? MainTableViewController{
                 dvc.navigationItem.title = "Home"
                 dvc.navigationItem.setHidesBackButton(true, animated: false)
             }
-            print("Successful verification!")
         }
     }
     
@@ -68,8 +67,7 @@ class LoginViewController: UIViewController {
         }else if (passwordTextField.text == ""){
             print("Password not entered!")
         }else{
-            print("Verifying user credentials...")
-            if (self.usernameTextField.text == "tchoe") && (self.passwordTextField.text == "whyyoualwayslying1234"){
+            if (self.usernameTextField.text == "1") && (self.passwordTextField.text == "2"){
                 performSegueWithIdentifier("loginUserSegue", sender: self)
             }else{
                 print("Wrong username/password combination")

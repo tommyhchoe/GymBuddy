@@ -48,7 +48,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "loginAsNewUserSegue"){
-            if let dvc = segue.destinationViewController as? MainViewController{
+            if let dvc = segue.destinationViewController as? MainTableViewController{
                 dvc.navigationItem.title = "Home"
                 dvc.navigationItem.setHidesBackButton(true, animated: false)
             }
