@@ -17,6 +17,8 @@ class ForgotViewController: UIViewController {
         self.configView()
     }
     
+    //MARK: - Helper Methods
+    
     func configView(){
         
         //Add intent to TextField

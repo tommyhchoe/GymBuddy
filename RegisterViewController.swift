@@ -93,6 +93,35 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.wrapperScrollView.scrollIndicatorInsets = contentInsets
     }
     
+    func loginAsNewUser(){
+        
+        //Check if any TextFields are empty
+        if (!didChangeImage){
+            print("Missing profile pic")
+        }else if (displayNameTextField.text == ""){
+            print("Missing display name")
+        }else if (usernameTextField.text == ""){
+            print("Missing username")
+        }else if (emailTextField.text == ""){
+            print("Missing email")
+        }else if (passwordTextField.text == ""){
+            print("Missing password")
+        }else if (ageTextField.text == ""){
+            print("Missing age")
+        }else if (genderTextField.text == ""){
+            print("Missing gender")
+        }else{
+            
+            //Store new user info in UserDatabase
+            userDatabase = UserDatabase(username: usernameTextField.text!, displayName: displayNameTextField.text!, email: emailTextField.text!, profilePic: self.imageFilename, password: passwordTextField.text!, age: ageTextField.text!, gender: genderTextField.text!)
+            if let username = userDatabase!.userDictionary["username"], displayName = userDatabase!.userDictionary["displayName"], email = userDatabase!.userDictionary["email"], password = userDatabase!.userDictionary["password"], age = userDatabase!.userDictionary["age"], gender = userDatabase!.userDictionary["gender"], profilePic = userDatabase!.userDictionary["profilePic"]{
+                
+                print("New user created with username \(username), password \(password), email \(email), displayName \(displayName), profilePic \(profilePic), age \(age), and gender \(gender).")
+                performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
+            }
+        }
+    }
+    
     //Mark: - Keyboard Delegate Methods
     
     //Call this method somewhere in your view controller setup code.
@@ -134,44 +163,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         activeField = nil
     }
     
-    func loginAsNewUser(){
-        
-        //Check if any TextFields are empty
-        if (!didChangeImage){
-            print("Missing profile pic")
-        }else if (displayNameTextField.text == ""){
-            print("Missing display name")
-        }else if (usernameTextField.text == ""){
-            print("Missing username")
-        }else if (emailTextField.text == ""){
-            print("Missing email")
-        }else if (passwordTextField.text == ""){
-            print("Missing password")
-        }else if (ageTextField.text == ""){
-            print("Missing age")
-        }else if (genderTextField.text == ""){
-            print("Missing gender")
-        }else{
-            
-            //Store new user info in UserDatabase
-            userDatabase = UserDatabase(username: usernameTextField.text!, displayName: displayNameTextField.text!, email: emailTextField.text!, profilePic: self.imageFilename, password: passwordTextField.text!, age: ageTextField.text!, gender: genderTextField.text!)
-            if let username = userDatabase!.userDictionary["username"], displayName = userDatabase!.userDictionary["displayName"], email = userDatabase!.userDictionary["email"], password = userDatabase!.userDictionary["password"], age = userDatabase!.userDictionary["age"], gender = userDatabase!.userDictionary["gender"], profilePic = userDatabase!.userDictionary["profilePic"]{
-                
-                print("New user created with username \(username), password \(password), email \(email), displayName \(displayName), profilePic \(profilePic), age \(age), and gender \(gender).")
-                performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
-            }
-        }
-    }
-    
-    @IBAction func changeProfileImage(sender: AnyObject) {
-        print("Change the profile image")
-        //prepare UIImagePickerController to be displayed with the appropriate settings
-        imagePicker.allowsEditing = true
-        imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        
-        presentViewController(imagePicker, animated: true, completion: nil)
-    }
-    
     //MARK: - UIImagePickerControllerDelegate Methods
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         
@@ -180,6 +171,16 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         imageButton.imageView!.contentMode = .ScaleAspectFill
         
         dismissViewControllerAnimated(false, completion: nil)
+    }
+    
+    //MARK: - IBAction Methods
+    
+    @IBAction func changeProfileImage(sender: AnyObject) {
+        //prepare UIImagePickerController to be displayed with the appropriate settings
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+        
+        presentViewController(imagePicker, animated: true, completion: nil)
     }
 }
 

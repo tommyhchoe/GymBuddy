@@ -44,6 +44,7 @@ class LoginViewController: UIViewController {
     }
     
     //MARK: - Helper Methods
+    
     func configView(){
         
         //Add indent to each TextField
@@ -77,13 +78,11 @@ class LoginViewController: UIViewController {
     }
     
     func registerNewUser(){
-        
-        //TODO: Send user info via segue
-        print("Register new user in process...")
         performSegueWithIdentifier("registerUserSegue", sender: self)
     }
     
     //MARK: - IBAction Methods
+    
     @IBAction func loginToFacebook(sender: AnyObject) {
         print("Logging in to Facebook")
     }
