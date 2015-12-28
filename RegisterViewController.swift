@@ -18,6 +18,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var ageTextField: UITextField!
+    @IBOutlet weak var loginErrorLabel: UILabel!
     
     let imageFilename: String = "Icon-73"
     var didChangeImage = false
@@ -95,21 +96,30 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func loginAsNewUser(){
         
+        if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        
         //Check if any TextFields are empty
         if (!didChangeImage){
-            print("Missing profile pic")
+            self.loginErrorLabel.text = "Missing profile pic"
+            self.toggleErrorLabel()
         }else if (displayNameTextField.text == ""){
-            print("Missing display name")
+            self.loginErrorLabel.text = "Missing display name"
+            self.toggleErrorLabel()
         }else if (usernameTextField.text == ""){
-            print("Missing username")
+            self.loginErrorLabel.text = "Missing username"
+            self.toggleErrorLabel()
         }else if (emailTextField.text == ""){
-            print("Missing email")
+            self.loginErrorLabel.text = "Missing email"
+            self.toggleErrorLabel()
         }else if (passwordTextField.text == ""){
-            print("Missing password")
+            self.loginErrorLabel.text = "Missing password"
+            self.toggleErrorLabel()
         }else if (ageTextField.text == ""){
-            print("Missing age")
+            self.loginErrorLabel.text = "Missing age"
+            self.toggleErrorLabel()
         }else if (genderTextField.text == ""){
-            print("Missing gender")
+            self.loginErrorLabel.text = "Missing gender"
+            self.toggleErrorLabel()
         }else{
             
             //Store new user info in UserDatabase
@@ -119,6 +129,14 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 print("New user created with username \(username), password \(password), email \(email), displayName \(displayName), profilePic \(profilePic), age \(age), and gender \(gender).")
                 performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
             }
+        }
+    }
+    
+    func toggleErrorLabel(){
+        if (self.loginErrorLabel.hidden == true){
+            self.loginErrorLabel.hidden = false
+        }else{
+            self.loginErrorLabel.hidden = true
         }
     }
     
@@ -157,10 +175,16 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func textFieldDidBeginEditing(textField: UITextField){
         activeField = textField
+        if (self.loginErrorLabel.hidden == false){
+            self.loginErrorLabel.hidden = true
+        }
     }
     
     func textFieldDidEndEditing(textField: UITextField){
         activeField = nil
+        if (self.loginErrorLabel.hidden == false){
+            self.loginErrorLabel.hidden = true
+        }
     }
     
     //MARK: - UIImagePickerControllerDelegate Methods

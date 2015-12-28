@@ -8,11 +8,14 @@
 
 import UIKit
 
-class ForgotViewController: UIViewController {
+class ForgotViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
 
+    @IBOutlet weak var loginErrorLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.emailTextField.delegate = self
 
         self.configView()
     }
@@ -33,10 +36,36 @@ class ForgotViewController: UIViewController {
     }
     
     func sendUserInfoByEmail(){
+        
+        //Hide loginErrorLabel before checking if any TextField is incomplete
+        if(self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        
         if (emailTextField.text != ""){
-            print("Sending user info. Thanks!")
+            self.loginErrorLabel.text = "Alright. We sent your login information"
+            self.loginErrorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
+            self.toggleErrorLabel()
         }else{
-            print("You didn't enter your email")
+            if (self.loginErrorLabel.backgroundColor! == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
+                self.loginErrorLabel.backgroundColor = UIColor.redColor()
+            }
+            self.loginErrorLabel.text = "You didn't enter your email"
+            self.toggleErrorLabel()
+        }
+    }
+    
+    func toggleErrorLabel(){
+        if (self.loginErrorLabel.hidden == true){
+            self.loginErrorLabel.hidden = false
+        }else{
+            self.loginErrorLabel.hidden = true
+        }
+    }
+    
+    //MARK: - UITextField Delegate Method(s)
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if (self.loginErrorLabel.hidden == false){
+            self.loginErrorLabel.hidden = true
         }
     }
 }

@@ -8,12 +8,16 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
+    @IBOutlet weak var loginErrorLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.usernameTextField.delegate = self
+        self.passwordTextField.delegate = self
     
         self.configView()
     }
@@ -61,22 +65,36 @@ class LoginViewController: UIViewController {
     }
 
     func logInUser(){
-
+        
+        //Hide errorLabel before checking TextFields
+        if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        
         if (usernameTextField.text == ""){
-            print("Username not entered!")
+            self.loginErrorLabel.text = "Username not entered!"
+            self.toggleErrorLabel()
         }else if (passwordTextField.text == ""){
-            print("Password not entered!")
+            self.loginErrorLabel.text = "Password not entered!"
+            self.toggleErrorLabel()
         }else{
             if (self.usernameTextField.text == "1") && (self.passwordTextField.text == "2"){
                 performSegueWithIdentifier("loginUserSegue", sender: self)
             }else{
-                print("Wrong username/password combination")
+                self.loginErrorLabel.text = "Username/Password combination is not recognized"
+                self.toggleErrorLabel()
             }
         }
     }
     
     func registerNewUser(){
         performSegueWithIdentifier("registerUserSegue", sender: self)
+    }
+    
+    func toggleErrorLabel(){
+        if (self.loginErrorLabel.hidden == true){
+            self.loginErrorLabel.hidden = false
+        }else{
+            self.loginErrorLabel.hidden = true
+        }
     }
     
     //MARK: - IBAction Methods
@@ -89,6 +107,14 @@ class LoginViewController: UIViewController {
     }
     @IBAction func retrieveUserInfo(sender: AnyObject) {
         performSegueWithIdentifier("retrieveUserInfoSegue", sender: self)
+    }
+    
+    //MARK: - TextField Delegate Methods
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        if (self.loginErrorLabel.hidden == false){
+            self.loginErrorLabel.hidden = true
+        }
     }
 }
 

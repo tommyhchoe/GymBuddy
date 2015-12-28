@@ -27,6 +27,7 @@ class MainTableViewController: UITableViewController {
     }
     
     //MARK: UITableViewDataSource && UITableViewDelegate Delegate Methods
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
