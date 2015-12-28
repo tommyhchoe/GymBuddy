@@ -22,20 +22,28 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.configView()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
         
         //Make navigationItem title reappear
         self.navigationItem.title = "Sign In"
     }
     
+    //MARK: - PrepareForSegue Method
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "registerUserSegue"){
             self.navigationItem.title = nil
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
         }
         
         if (segue.identifier == "retrieveUserInfoSegue"){
             self.navigationItem.title = nil
+            let backItem = UIBarButtonItem()
+            backItem.title = ""
+            self.navigationItem.backBarButtonItem = backItem
         }
         
         if (segue.identifier == "loginUserSegue"){
@@ -51,10 +59,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func configView(){
         
         //Add indent to each TextField
-        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
         usernameTextField.leftView = paddingView1
         usernameTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
         passwordTextField.leftView = paddingView2
         passwordTextField.leftViewMode = UITextFieldViewMode.Always
         

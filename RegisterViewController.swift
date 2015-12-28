@@ -22,7 +22,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     let imageFilename: String = "Icon-73"
     var didChangeImage = false
-    var userDatabase: UserDatabase?
+    var usersDatabase: UsersDatabase?
     
     let imagePicker = UIImagePickerController()
     var activeField: UITextField?
@@ -47,11 +47,17 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.resetScrollView()
     }
     
+    //MARK: - PrepareForSegue Method
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "loginAsNewUserSegue"){
             if let dvc = segue.destinationViewController as? MainTableViewController{
                 dvc.navigationItem.title = "Home"
                 dvc.navigationItem.setHidesBackButton(true, animated: false)
+                dvc.usersDatabase = self.usersDatabase
+                let username = self.usersDatabase!.usersDictionary[self.usernameTextField.text!]
+                dvc.currentUserUsername = username?.info["username"]
+                dvc.currentUserPassword = username?.info["password"]
             }
         }
     }
@@ -61,27 +67,27 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     func configView(){
         
         //Add default image to profile pic
-        imageButton.setImage(UIImage(named: imageFilename), forState: UIControlState.Normal)
+        self.imageButton.setImage(UIImage(named: imageFilename), forState: UIControlState.Normal)
         
         //Add indent to each TextField
-        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        emailTextField.leftView = paddingView1
-        emailTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        displayNameTextField.leftView = paddingView2
-        displayNameTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView3 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        passwordTextField.leftView = paddingView3
-        passwordTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView4 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        genderTextField.leftView = paddingView4
-        genderTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView5 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        ageTextField.leftView = paddingView5
-        ageTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView6 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        usernameTextField.leftView = paddingView6
-        usernameTextField.leftViewMode = UITextFieldViewMode.Always
+        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+        self.emailTextField.leftView = paddingView1
+        self.emailTextField.leftViewMode = .Always
+        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+        self.displayNameTextField.leftView = paddingView2
+        self.displayNameTextField.leftViewMode = .Always
+        let paddingView3 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+        self.passwordTextField.leftView = paddingView3
+        self.passwordTextField.leftViewMode = .Always
+        let paddingView4 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+        self.genderTextField.leftView = paddingView4
+        self.genderTextField.leftViewMode = .Always
+        let paddingView5 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+        self.ageTextField.leftView = paddingView5
+        self.ageTextField.leftViewMode = .Always
+        let paddingView6 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+        self.usernameTextField.leftView = paddingView6
+        self.usernameTextField.leftViewMode = .Always
         
         //Setup navigationItem
         self.navigationItem.title = "Register"
@@ -121,14 +127,9 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             self.loginErrorLabel.text = "Missing gender"
             self.toggleErrorLabel()
         }else{
-            
             //Store new user info in UserDatabase
-            userDatabase = UserDatabase(username: usernameTextField.text!, displayName: displayNameTextField.text!, email: emailTextField.text!, profilePic: self.imageFilename, password: passwordTextField.text!, age: ageTextField.text!, gender: genderTextField.text!)
-            if let username = userDatabase!.userDictionary["username"], displayName = userDatabase!.userDictionary["displayName"], email = userDatabase!.userDictionary["email"], password = userDatabase!.userDictionary["password"], age = userDatabase!.userDictionary["age"], gender = userDatabase!.userDictionary["gender"], profilePic = userDatabase!.userDictionary["profilePic"]{
-                
-                print("New user created with username \(username), password \(password), email \(email), displayName \(displayName), profilePic \(profilePic), age \(age), and gender \(gender).")
-                performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
-            }
+            usersDatabase!.addNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageFilename, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
+            performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
         }
     }
     
@@ -188,6 +189,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     //MARK: - UIImagePickerControllerDelegate Methods
+    
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         
         imageButton.setImage(image, forState: UIControlState.Normal)
