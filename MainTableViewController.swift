@@ -11,14 +11,16 @@ import Parse
 
 class MainTableViewController: UITableViewController {
     
-    var currentUserUsername: String?
-    var currentUserPassword: String?
+    var currentUser: PFUser?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.configView()
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        currentUser = PFUser.currentUser()
     }
     
     //MARK: Helper Methods
@@ -28,6 +30,13 @@ class MainTableViewController: UITableViewController {
     }
     
     func logoutUser(){
+        print(currentUser)
+        PFUser.logOut()
+        if let cUser = PFUser.currentUser(){
+            print(cUser)
+        }else {
+            print("There is no user logged in")
+        }
         performSegueWithIdentifier("logoutUserSegue", sender: self)
     }
     

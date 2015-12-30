@@ -27,6 +27,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     let imagePicker = UIImagePickerController()
     var activeField: UITextField?
     
+    var errorLabelIsHidden = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,7 +42,11 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         
         self.configView()
         self.registerForKeyboardNotifications()
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        //Set errorLabel visibility
+        self.loginErrorLabel.hidden = self.errorLabelIsHidden
     }
     
     override func viewDidLayoutSubviews() {
@@ -126,7 +132,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         }else{
             //Store new user info in Parse Core
             self.createNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageButton.imageView!.image!, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
-            performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
         }
     }
 
@@ -144,14 +149,26 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             user["profilePic"] = imageFile
             user["age"] = age
             user["gender"] = gender
-            
-            user.signUpInBackgroundWithBlock { (success, error) -> Void in
-                if success {
-                    print("Yay. Success!")
-                } else {
-                    print("Error \(error)")
+
+            user.signUpInBackgroundWithBlock({ (success, error) -> Void in
+                if (error == nil){
+                    self.performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
+                }else{
+                    let errorCode = error!.code
+                    
+                    switch(errorCode){
+                        case PFErrorCode.ErrorConnectionFailed.rawValue:
+                            self.loginErrorLabel.text = "Connection failed"
+                        case PFErrorCode.ErrorUserEmailTaken.rawValue:
+                            self.loginErrorLabel.text = "Email is already taken"
+                        case PFErrorCode.ErrorUsernameTaken.rawValue:
+                            self.loginErrorLabel.text = "Username is already taken"
+                        default:
+                            break
+                    }
+                    self.toggleErrorLabel()
                 }
-            }
+            })
         }
     }
     
