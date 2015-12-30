@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
@@ -22,7 +23,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     let imageFilename: String = "Icon-73"
     var didChangeImage = false
-    var usersDatabase: UsersDatabase?
     
     let imagePicker = UIImagePickerController()
     var activeField: UITextField?
@@ -40,6 +40,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         
         self.configView()
         self.registerForKeyboardNotifications()
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,10 +55,6 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             if let dvc = segue.destinationViewController as? MainTableViewController{
                 dvc.navigationItem.title = "Home"
                 dvc.navigationItem.setHidesBackButton(true, animated: false)
-                dvc.usersDatabase = self.usersDatabase
-                let username = self.usersDatabase!.usersDictionary[self.usernameTextField.text!]
-                dvc.currentUserUsername = username?.info["username"]
-                dvc.currentUserPassword = username?.info["password"]
             }
         }
     }
@@ -127,9 +124,32 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             self.loginErrorLabel.text = "Missing gender"
             self.toggleErrorLabel()
         }else{
-            //Store new user info in UserDatabase
-            usersDatabase!.addNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageFilename, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
+            //Store new user info in Parse Core
+            self.createNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageFilename, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
             performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
+        }
+    }
+
+    //Create new user on Parse.com
+    func createNewUser(username: String, displayName: String, email: String, profilePic: String, password: String, age: String, gender: String){
+
+        let user = PFUser()
+        user.username = username
+        user.password = password
+        user.email = email
+        user["displayName"] = displayName
+        user["profilePic"] = profilePic
+        user["age"] = age
+        user["gender"] = gender
+        
+        user.signUpInBackgroundWithBlock { (success, error) -> Void in
+            if success {
+                // Hooray! Let them use the app now.
+                print("Yay. Success!")
+            } else {
+                // Examine the error object and inform the user.
+                print("Error \(error)")
+            }
         }
     }
     

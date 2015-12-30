@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginErrorLabel: UILabel!
@@ -84,11 +85,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             self.loginErrorLabel.text = "Password not entered!"
             self.toggleErrorLabel()
         }else{
-            if (self.usernameTextField.text == "1") && (self.passwordTextField.text == "2"){
-                performSegueWithIdentifier("loginUserSegue", sender: self)
-            }else{
-                self.loginErrorLabel.text = "Username/Password combination is not recognized"
-                self.toggleErrorLabel()
+            PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){
+                (success, error) in
+                if (success != nil){
+                    self.performSegueWithIdentifier("loginUserSegue", sender: self)
+                }else{
+                    self.loginErrorLabel.text = "Username/Password combination is not recognized"
+                    self.toggleErrorLabel()
+                }
             }
         }
     }
