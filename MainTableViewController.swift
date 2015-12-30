@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class MainTableViewController: UITableViewController {
     
@@ -17,6 +18,7 @@ class MainTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.configView()
+        
     }
     
     //MARK: Helper Methods

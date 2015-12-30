@@ -21,7 +21,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var ageTextField: UITextField!
     @IBOutlet weak var loginErrorLabel: UILabel!
     
-    let imageFilename: String = "Icon-73"
+    let defaultImage: String = "Icon-73"
     var didChangeImage = false
     
     let imagePicker = UIImagePickerController()
@@ -64,7 +64,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     func configView(){
         
         //Add default image to profile pic
-        self.imageButton.setImage(UIImage(named: imageFilename), forState: UIControlState.Normal)
+        self.imageButton.setImage(UIImage(named: self.defaultImage), forState: UIControlState.Normal)
         
         //Add indent to each TextField
         let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
@@ -125,30 +125,32 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
             self.toggleErrorLabel()
         }else{
             //Store new user info in Parse Core
-            self.createNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageFilename, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
+            self.createNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageButton.imageView!.image!, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
             performSegueWithIdentifier("loginAsNewUserSegue", sender: self)
         }
     }
 
     //Create new user on Parse.com
-    func createNewUser(username: String, displayName: String, email: String, profilePic: String, password: String, age: String, gender: String){
+    func createNewUser(username: String, displayName: String, email: String, profilePic: UIImage, password: String, age: String, gender: String){
 
         let user = PFUser()
-        user.username = username
-        user.password = password
-        user.email = email
-        user["displayName"] = displayName
-        user["profilePic"] = profilePic
-        user["age"] = age
-        user["gender"] = gender
-        
-        user.signUpInBackgroundWithBlock { (success, error) -> Void in
-            if success {
-                // Hooray! Let them use the app now.
-                print("Yay. Success!")
-            } else {
-                // Examine the error object and inform the user.
-                print("Error \(error)")
+        if let imageData = UIImagePNGRepresentation(profilePic),
+            let imageFile = PFFile(data: imageData){
+            
+            user.username = username
+            user.password = password
+            user.email = email
+            user["displayName"] = displayName
+            user["profilePic"] = imageFile
+            user["age"] = age
+            user["gender"] = gender
+            
+            user.signUpInBackgroundWithBlock { (success, error) -> Void in
+                if success {
+                    print("Yay. Success!")
+                } else {
+                    print("Error \(error)")
+                }
             }
         }
     }
