@@ -52,9 +52,9 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "loginAsNewUserSegue"){
-            if let dvc = segue.destinationViewController as? MainTableViewController{
-                dvc.navigationItem.title = "Home"
+            if let dvc = segue.destinationViewController as? LoginViewController{
                 dvc.navigationItem.setHidesBackButton(true, animated: false)
+                dvc.errorLabelIsHidden = false
             }
         }
     }
@@ -88,7 +88,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         
         //Setup navigationItem
         self.navigationItem.title = "Register"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("loginAsNewUser"))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerAsNewUser"))
     }
     
     func resetScrollView(){
@@ -97,7 +97,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.wrapperScrollView.scrollIndicatorInsets = contentInsets
     }
     
-    func loginAsNewUser(){
+    func registerAsNewUser(){
         
         if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
         

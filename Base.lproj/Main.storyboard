@@ -79,7 +79,7 @@
                                     <action selector="retrieveUserInfo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="paf-Ey-WTf"/>
                                 </connections>
                             </button>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops.. There was a problem." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ToU-em-U00">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops.. There was a problem." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ToU-em-U00">
                                 <rect key="frame" x="0.0" y="64" width="600" height="30"/>
                                 <color key="backgroundColor" red="1" green="0.1094318604" blue="0.054835341369999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -333,12 +333,12 @@
                         <outlet property="passwordTextField" destination="2jg-VB-EKr" id="0zh-wf-pVO"/>
                         <outlet property="usernameTextField" destination="Mwf-AM-Mts" id="W9g-8S-h72"/>
                         <outlet property="wrapperScrollView" destination="IvN-JQ-Uyg" id="oXp-h2-PS8"/>
-                        <segue destination="XyF-6D-c1b" kind="show" identifier="loginAsNewUserSegue" id="IXx-Z4-vzI"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="loginAsNewUserSegue" id="cuV-J2-Zem"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NPj-G6-82m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="956" y="-1114"/>
+            <point key="canvasLocation" x="956" y="-1143"/>
         </scene>
         <!--Forgot View Controller-->
         <scene sceneID="0Ov-gd-VHz">
@@ -413,7 +413,6 @@
         <image name="Icon-72" width="72" height="72"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="iOD-pi-KW3"/>
-        <segue reference="OiJ-0e-xLy"/>
+        <segue reference="cuV-J2-Zem"/>
     </inferredMetricsTieBreakers>
 </document>

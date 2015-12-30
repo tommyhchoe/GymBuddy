@@ -13,6 +13,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginErrorLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    
+    var errorLabelIsHidden = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +30,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         //Make navigationItem title reappear
         self.navigationItem.title = "Sign In"
+        
+        //Set errorLabel visibility
+        self.loginErrorLabel.hidden = self.errorLabelIsHidden
+        if (self.errorLabelIsHidden == false){
+            self.loginErrorLabel.text = "Your account has been created!"
+            self.loginErrorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
+        }
     }
     
     //MARK: - PrepareForSegue Method
@@ -80,9 +89,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if (usernameTextField.text == ""){
             self.loginErrorLabel.text = "Username not entered!"
+            if (self.loginErrorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
+                self.loginErrorLabel.backgroundColor = UIColor.redColor()
+            }
             self.toggleErrorLabel()
         }else if (passwordTextField.text == ""){
             self.loginErrorLabel.text = "Password not entered!"
+            if (self.loginErrorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
+                self.loginErrorLabel.backgroundColor = UIColor.redColor()
+            }
             self.toggleErrorLabel()
         }else{
             PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){
