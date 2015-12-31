@@ -8,6 +8,8 @@
 
 import UIKit
 import Parse
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginErrorLabel: UILabel!
@@ -23,6 +25,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.passwordTextField.delegate = self
     
         self.configView()
+        
+        let loginButton = FBSDKLoginButton()
+        loginButton.center = self.view.center
+        self.view.addSubview(loginButton)
+        
+        //Adding constraints to Facebook Login Button
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        let trailingMargin = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Trailing, relatedBy: NSLayoutRelation.Equal, toItem: loginButton, attribute: NSLayoutAttribute.Trailing, multiplier: 1, constant: 20)
+        let leadingMargin = NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: loginButton, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: 20)
+        NSLayoutConstraint.activateConstraints([trailingMargin, leadingMargin])
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -135,9 +148,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBAction func loginToFacebook(sender: AnyObject) {
         print("Logging in to Facebook")
     }
-    @IBAction func loginToGooglePlus(sender: AnyObject) {
-        print("Logging in to Google+")
-    }
+    
     @IBAction func retrieveUserInfo(sender: AnyObject) {
         performSegueWithIdentifier("retrieveUserInfoSegue", sender: self)
     }

@@ -8,6 +8,9 @@
 
 import UIKit
 import Parse
+import FBSDKCoreKit
+import ParseFacebookUtilsV4
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,8 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Parse basic setup
         Parse.setApplicationId("ujyKHo2WpHjAM7TNogHUFvIwQxDwP4YpxGKA5Ck2", clientKey: "1mAkBtZHfNRPeAggcDgQIUtuggPLgMZJKwjkPRUW")
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        Parse.setApplicationId("parseAppId", clientKey: "parseClientKey")
+        
+        //Parse-Facebook integration
+        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
 
         return true
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -50,6 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        FBSDKAppEvents.activateApp()
+        
     }
 
     func applicationWillTerminate(application: UIApplication) {
