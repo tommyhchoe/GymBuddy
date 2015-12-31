@@ -9,17 +9,22 @@
 import UIKit
 import Parse
 
-class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var wrapperScrollView: UIScrollView!
     @IBOutlet weak var imageButton: UIButton!
+    
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var displayNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var ageTextField: UITextField!
+    
     @IBOutlet weak var loginErrorLabel: UILabel!
+    
+    @IBOutlet weak var genderPickerView: UIPickerView!
+    @IBOutlet weak var agePickerView: UIPickerView!
     
     let defaultImage: String = "Icon-73"
     var didChangeImage = false
@@ -28,6 +33,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     var activeField: UITextField?
     
     var errorLabelIsHidden = true
+    let genderOptions = ["Male", "Female", "Other", "Would Rather Not Say"]
+    let ageOptions = [13,14,15,16,17]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +52,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(false)
         //Set errorLabel visibility
         self.loginErrorLabel.hidden = self.errorLabelIsHidden
     }
@@ -85,6 +93,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         let paddingView4 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
         self.genderTextField.leftView = paddingView4
         self.genderTextField.leftViewMode = .Always
+        self.genderTextField.text = self.genderOptions[0]
         let paddingView5 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
         self.ageTextField.leftView = paddingView5
         self.ageTextField.leftViewMode = .Always
@@ -95,6 +104,11 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         //Setup navigationItem
         self.navigationItem.title = "Register"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerAsNewUser"))
+        
+        //Setup UIPickerView
+        self.genderPickerView.delegate = self
+        self.agePickerView.delegate = self
+        
     }
     
     func resetScrollView(){
@@ -106,6 +120,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     func registerAsNewUser(){
         
         if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        
+        self.navigationItem.rightBarButtonItem?.enabled = false
         
         //Check if any TextFields are empty
         if (!didChangeImage){
@@ -167,6 +183,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                             break
                     }
                     self.toggleErrorLabel()
+                    self.navigationItem.rightBarButtonItem?.enabled = true
                 }
             })
         }
@@ -224,6 +241,50 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         activeField = nil
         if (self.loginErrorLabel.hidden == false){
             self.loginErrorLabel.hidden = true
+        }
+    }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if (textField.isEqual(self.genderTextField)){
+            self.genderPickerView.hidden = false
+            return false
+        }else if (textField.isEqual(self.ageTextField)) {
+            self.agePickerView.hidden = false
+            return false
+        }else {
+            return true
+        }
+    }
+    
+    //MARK: - UIPickerView Delegate Methods
+    
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if (pickerView.isEqual(self.genderPickerView)){
+            return self.genderOptions.count
+        }else {
+            return self.ageOptions.count
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if (pickerView.isEqual(self.genderPickerView)){
+            self.genderTextField.text = self.genderOptions[row]
+            self.genderPickerView.hidden = true
+        }else{
+            self.ageTextField.text = String(self.ageOptions[row])
+            self.agePickerView.hidden = true
+        }
+    }
+    
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (pickerView.isEqual(self.genderPickerView)){
+            return self.genderOptions[row]
+        }else {
+            return String(self.ageOptions[row])
         }
     }
     

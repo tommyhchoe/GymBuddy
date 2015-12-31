@@ -78,11 +78,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         //Setup navigationItem for ViewController
         self.navigationItem.title = "Sign In"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log in", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logInUser"))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Login", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logInUser"))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Register", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerNewUser"))
     }
 
+    //Login BarButtonItem was pressed
     func logInUser(){
+        
+        self.navigationItem.rightBarButtonItem?.enabled = false
         
         //Hide errorLabel before checking TextFields
         if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
@@ -92,12 +95,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             if (self.loginErrorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
                 self.loginErrorLabel.backgroundColor = UIColor.redColor()
             }
+            self.navigationItem.rightBarButtonItem?.enabled = true
             self.toggleErrorLabel()
         }else if (passwordTextField.text == ""){
             self.loginErrorLabel.text = "Password not entered!"
             if (self.loginErrorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
                 self.loginErrorLabel.backgroundColor = UIColor.redColor()
             }
+            self.navigationItem.rightBarButtonItem?.enabled = true
             self.toggleErrorLabel()
         }else{
             PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){
@@ -108,6 +113,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.loginErrorLabel.text = "Username/Password combination is not recognized"
                     self.toggleErrorLabel()
                 }
+                self.navigationItem.rightBarButtonItem?.enabled = true
             }
         }
     }
