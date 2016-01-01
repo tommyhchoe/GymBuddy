@@ -8,11 +8,14 @@
 
 import UIKit
 import Parse
+import ParseFacebookUtilsV4
 
 class RegisterViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     @IBOutlet weak var wrapperScrollView: UIScrollView!
+    
     @IBOutlet weak var imageButton: UIButton!
+    @IBOutlet weak var FBLoginButton: UIButton!
     
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
@@ -71,6 +74,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 dvc.errorLabelIsHidden = false
             }
         }
+        if (segue.identifier == "registerNewFBUserSegue"){
+            if let dvc = segue.destinationViewController as? MainTableViewController{
+                dvc.navigationItem.title = "My Gyms"
+                dvc.navigationItem.setHidesBackButton(true, animated: false)
+            }
+        }
     }
     
     //MARK: - Helper Methods
@@ -109,6 +118,11 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.genderPickerView.delegate = self
         self.agePickerView.delegate = self
         
+        //Setup FBLoginButton
+        self.FBLoginButton.setTitle("Register with Facebook", forState: UIControlState.Normal)
+        self.FBLoginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        self.FBLoginButton.backgroundColor = UIColor(red: 59/255, green: 89/255, blue: 152/255, alpha: 1.0)
+        self.FBLoginButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
     }
     
     func resetScrollView(){
@@ -127,24 +141,31 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         if (!didChangeImage){
             self.loginErrorLabel.text = "Missing profile pic"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (displayNameTextField.text == ""){
             self.loginErrorLabel.text = "Missing display name"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (usernameTextField.text == ""){
             self.loginErrorLabel.text = "Missing username"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (emailTextField.text == ""){
             self.loginErrorLabel.text = "Missing email"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (passwordTextField.text == ""){
             self.loginErrorLabel.text = "Missing password"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (ageTextField.text == ""){
             self.loginErrorLabel.text = "Missing age"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (genderTextField.text == ""){
             self.loginErrorLabel.text = "Missing gender"
             self.toggleErrorLabel()
+            self.navigationItem.rightBarButtonItem?.enabled = true
         }else{
             //Store new user info in Parse Core
             self.createNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageButton.imageView!.image!, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
@@ -307,6 +328,22 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         
         presentViewController(imagePicker, animated: true, completion: nil)
+    }
+    @IBAction func FBLoginButtonPressed(sender: AnyObject) {
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"]) { (user: PFUser?, error: NSError?) -> Void in
+            if let user = user{
+                if user.isNew{
+                    print("User signed up and logged in through FB")
+                }else{
+                    print("User logged in through FB")
+                }
+                self.performSegueWithIdentifier("registerNewFBUserSegue", sender: self)
+            }else{
+                print("Uh Oh. The user cancelled the Facebook login")
+                self.loginErrorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
+                self.toggleErrorLabel()
+            }
+        }
     }
 }
 

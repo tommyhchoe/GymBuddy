@@ -10,11 +10,14 @@ import UIKit
 import Parse
 import FBSDKCoreKit
 import FBSDKLoginKit
+import ParseFacebookUtilsV4
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var loginErrorLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    
+    @IBOutlet weak var FBLoginButton: UIButton!
     
     var errorLabelIsHidden = true
 
@@ -25,11 +28,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.passwordTextField.delegate = self
     
         self.configView()
-        
-        let loginButton = FBSDKLoginButton()
-        loginButton.frame.size.width = self.view.frame.width
-        loginButton.center = self.view.center
-        self.view.addSubview(loginButton)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,7 +63,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
         if (segue.identifier == "loginUserSegue"){
             if let dvc = segue.destinationViewController as? MainTableViewController{
-                dvc.navigationItem.title = "Home"
+                dvc.navigationItem.title = "My Gyms"
                 dvc.navigationItem.setHidesBackButton(true, animated: false)
             }
         }
@@ -87,6 +85,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.navigationItem.title = "Sign In"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log in", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logInUser"))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Register", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerNewUser"))
+        
+        //Setup FBLoginButton
+        self.FBLoginButton.backgroundColor = UIColor(red: 59/255, green: 89/255, blue: 152/255, alpha: 1.0)
+        self.FBLoginButton.setTitle("Login with Facebook", forState: UIControlState.Normal)
+        self.FBLoginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+        self.FBLoginButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
     }
 
     func logInUser(){
@@ -140,6 +144,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         if (self.loginErrorLabel.hidden == false){
             self.loginErrorLabel.hidden = true
+        }
+    }
+    @IBAction func FBLoginButtonPressed(sender: AnyObject) {
+        PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"]) { (user: PFUser?, error: NSError?) -> Void in
+            if let user = user{
+                if user.isNew{
+                    print("User signed up and logged in through FB")
+                }else{
+                    print("User logged in through FB")
+                }
+                self.performSegueWithIdentifier("loginUserSegue", sender: self)
+            }else{
+                print("Uh Oh. The user cancelled the Facebook login")
+                self.loginErrorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
+                self.toggleErrorLabel()
+            }
         }
     }
 }
