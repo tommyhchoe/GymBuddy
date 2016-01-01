@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Parse basic setup
         Parse.setApplicationId("ujyKHo2WpHjAM7TNogHUFvIwQxDwP4YpxGKA5Ck2", clientKey: "1mAkBtZHfNRPeAggcDgQIUtuggPLgMZJKwjkPRUW")
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
-        Parse.setApplicationId("parseAppId", clientKey: "parseClientKey")
         
         //Parse-Facebook integration
         PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
