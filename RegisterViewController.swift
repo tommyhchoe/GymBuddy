@@ -24,7 +24,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var ageTextField: UITextField!
     
-    @IBOutlet weak var loginErrorLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
     
     @IBOutlet weak var genderPickerView: UIPickerView!
     @IBOutlet weak var agePickerView: UIPickerView!
@@ -33,7 +33,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     var didChangeImage = false
     
     let imagePicker = UIImagePickerController()
-    var activeField: UITextField?
+    var keyboardSize: CGSize?
     
     var errorLabelIsHidden = true
     let genderOptions = ["Male", "Female", "Other", "Would Rather Not Say"]
@@ -57,7 +57,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(false)
         //Set errorLabel visibility
-        self.loginErrorLabel.hidden = self.errorLabelIsHidden
+        self.errorLabel.hidden = self.errorLabelIsHidden
     }
     
     override func viewDidLayoutSubviews() {
@@ -133,37 +133,37 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func registerAsNewUser(){
         
-        if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        if (self.errorLabel.hidden == false){self.errorLabel.hidden = true}
         
         self.navigationItem.rightBarButtonItem?.enabled = false
         
         //Check if any TextFields are empty
         if (!didChangeImage){
-            self.loginErrorLabel.text = "Missing profile pic"
+            self.errorLabel.text = "Missing profile pic"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (displayNameTextField.text == ""){
-            self.loginErrorLabel.text = "Missing display name"
+            self.errorLabel.text = "Missing display name"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (usernameTextField.text == ""){
-            self.loginErrorLabel.text = "Missing username"
+            self.errorLabel.text = "Missing username"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (emailTextField.text == ""){
-            self.loginErrorLabel.text = "Missing email"
+            self.errorLabel.text = "Missing email"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (passwordTextField.text == ""){
-            self.loginErrorLabel.text = "Missing password"
+            self.errorLabel.text = "Missing password"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (ageTextField.text == ""){
-            self.loginErrorLabel.text = "Missing age"
+            self.errorLabel.text = "Missing age"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else if (genderTextField.text == ""){
-            self.loginErrorLabel.text = "Missing gender"
+            self.errorLabel.text = "Missing gender"
             self.toggleErrorLabel()
             self.navigationItem.rightBarButtonItem?.enabled = true
         }else{
@@ -194,13 +194,13 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                         let errorCode = error!.code
                         switch(errorCode){
                         case PFErrorCode.ErrorConnectionFailed.rawValue:
-                            self.loginErrorLabel.text = "Connection failed."
+                            self.errorLabel.text = "Connection failed."
                         case PFErrorCode.ErrorUserEmailTaken.rawValue:
-                            self.loginErrorLabel.text = "Email is already taken."
+                            self.errorLabel.text = "Email is already taken."
                         case PFErrorCode.ErrorUsernameTaken.rawValue:
-                            self.loginErrorLabel.text = "Username is already taken."
+                            self.errorLabel.text = "Username is already taken."
                         default:
-                            self.loginErrorLabel.text = "Something went wrong. Try again."
+                            self.errorLabel.text = "Something went wrong. Try again."
                             break
                         }
                         self.toggleErrorLabel()
@@ -211,10 +211,10 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func toggleErrorLabel(){
-        if (self.loginErrorLabel.hidden == true){
-            self.loginErrorLabel.hidden = false
+        if (self.errorLabel.hidden == true){
+            self.errorLabel.hidden = false
         }else{
-            self.loginErrorLabel.hidden = true
+            self.errorLabel.hidden = true
         }
     }
     
@@ -229,22 +229,20 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     //Called when the UIKeyboardDidShowNotification is sent.
     func keyboardWasShown(aNotification: NSNotification){
         let info: NSDictionary = aNotification.userInfo!
-        let kbSize: CGSize? = info.objectForKey(UIKeyboardFrameBeginUserInfoKey)?.CGRectValue.size
-        let contentInsets: UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize!.height, 0.0)
+        keyboardSize = info.objectForKey(UIKeyboardFrameBeginUserInfoKey)?.CGRectValue.size
+        let contentInsets: UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, self.keyboardSize!.height, 0.0)
         self.wrapperScrollView.contentInset = contentInsets
         self.wrapperScrollView.scrollIndicatorInsets = contentInsets
         
         //If active text is invisible, scroll it so it's visible
         var aRect: CGRect = self.view.frame
-        aRect.size.height -= kbSize!.height
-        if let activeFieldPresent = activeField{
-            if (!CGRectContainsPoint(aRect, activeFieldPresent.frame.origin)){
-                self.wrapperScrollView.scrollRectToVisible(activeFieldPresent.frame, animated: true)
-            }
+        aRect.size.height -= self.keyboardSize!.height
+        if (!CGRectContainsPoint(aRect, self.ageTextField.frame.origin)){
+            self.wrapperScrollView.scrollRectToVisible(self.ageTextField.frame, animated: true)
         }
     }
     
-    //Called when the UIKeyboardDidShowNotification is sent.
+    //Called when the UIKeyboardWillHideNotification is sent.
     func keyboardWillBeHidden(aNotification: NSNotification){
         let contentInsets: UIEdgeInsets = UIEdgeInsetsZero
         self.wrapperScrollView.contentInset = contentInsets
@@ -252,16 +250,23 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func textFieldDidBeginEditing(textField: UITextField){
-        activeField = textField
-        if (self.loginErrorLabel.hidden == false){
-            self.loginErrorLabel.hidden = true
+        if (self.errorLabel.hidden == false){
+            self.errorLabel.hidden = true
+        }
+    
+        //If active text is invisible, scroll it so it's visible
+        var aRect: CGRect = self.view.frame
+        if let keyboardSize = self.keyboardSize{
+            aRect.size.height -= keyboardSize.height
+            if (!CGRectContainsPoint(aRect, self.ageTextField.frame.origin)){
+                self.wrapperScrollView.scrollRectToVisible(self.ageTextField.frame, animated: false)
+            }
         }
     }
     
     func textFieldDidEndEditing(textField: UITextField){
-        activeField = nil
-        if (self.loginErrorLabel.hidden == false){
-            self.loginErrorLabel.hidden = true
+        if (self.errorLabel.hidden == false){
+            self.errorLabel.hidden = true
         }
     }
     
@@ -275,6 +280,22 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         }else {
             return true
         }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if (textField.isEqual(self.displayNameTextField)){
+            self.usernameTextField.becomeFirstResponder()
+        }
+        if (textField.isEqual(self.usernameTextField)){
+            self.emailTextField.becomeFirstResponder()
+        }
+        if (textField.isEqual(self.emailTextField)){
+            self.passwordTextField.becomeFirstResponder()
+        }
+        if (textField.isEqual(self.passwordTextField)){
+            textField.resignFirstResponder()
+        }
+        return true
     }
     
     //MARK: - UIPickerView Delegate Methods
@@ -340,7 +361,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                 self.performSegueWithIdentifier("registerNewFBUserSegue", sender: self)
             }else{
                 print("Uh Oh. The user cancelled the Facebook login")
-                self.loginErrorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
+                self.errorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
                 self.toggleErrorLabel()
             }
         }

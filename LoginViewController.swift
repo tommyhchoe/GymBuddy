@@ -13,7 +13,7 @@ import FBSDKLoginKit
 import ParseFacebookUtilsV4
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
-    @IBOutlet weak var loginErrorLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
@@ -37,10 +37,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.navigationItem.title = "Sign In"
         
         //Set errorLabel visibility
-        self.loginErrorLabel.hidden = self.errorLabelIsHidden
+        self.errorLabel.hidden = self.errorLabelIsHidden
         if (self.errorLabelIsHidden == false){
-            self.loginErrorLabel.text = "Your account has been created!"
-            self.loginErrorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
+            self.errorLabel.text = "Your account has been created!"
+            self.errorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
         }
     }
     
@@ -93,21 +93,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.FBLoginButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
     }
 
+    //User pressed login button
     func logInUser(){
         
         //Hide errorLabel before checking TextFields
-        if (self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        if (self.errorLabel.hidden == false){self.errorLabel.hidden = true}
         
         if (usernameTextField.text == ""){
-            self.loginErrorLabel.text = "Username not entered!"
-            if (self.loginErrorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
-                self.loginErrorLabel.backgroundColor = UIColor.redColor()
+            self.errorLabel.text = "Username not entered!"
+            if (self.errorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
+                self.errorLabel.backgroundColor = UIColor.redColor()
             }
             self.toggleErrorLabel()
         }else if (passwordTextField.text == ""){
-            self.loginErrorLabel.text = "Password not entered!"
-            if (self.loginErrorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
-                self.loginErrorLabel.backgroundColor = UIColor.redColor()
+            self.errorLabel.text = "Password not entered!"
+            if (self.errorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
+                self.errorLabel.backgroundColor = UIColor.redColor()
             }
             self.toggleErrorLabel()
         }else{
@@ -116,7 +117,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 if (success != nil){
                     self.performSegueWithIdentifier("loginUserSegue", sender: self)
                 }else{
-                    self.loginErrorLabel.text = "Username/Password combination is not recognized"
+                    self.errorLabel.text = "Username/Password combination is not recognized"
                     self.toggleErrorLabel()
                 }
             }
@@ -128,10 +129,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func toggleErrorLabel(){
-        if (self.loginErrorLabel.hidden == true){
-            self.loginErrorLabel.hidden = false
+        if (self.errorLabel.hidden == true){
+            self.errorLabel.hidden = false
         }else{
-            self.loginErrorLabel.hidden = true
+            self.errorLabel.hidden = true
         }
     }
     
@@ -142,10 +143,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //MARK: - TextField Delegate Methods
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if (self.loginErrorLabel.hidden == false){
-            self.loginErrorLabel.hidden = true
+        if (self.errorLabel.hidden == false){
+            self.errorLabel.hidden = true
         }
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if (textField.isEqual(self.usernameTextField)){
+            self.passwordTextField.becomeFirstResponder()
+        }
+        if (textField.isEqual(self.passwordTextField)){
+            self.logInUser()
+        }
+        return true
+    }
+    
+    //MARK: - IBAction Methods
     @IBAction func FBLoginButtonPressed(sender: AnyObject) {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"]) { (user: PFUser?, error: NSError?) -> Void in
             if let user = user{
@@ -157,7 +170,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.performSegueWithIdentifier("loginUserSegue", sender: self)
             }else{
                 print("Uh Oh. The user cancelled the Facebook login")
-                self.loginErrorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
+                self.errorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
                 self.toggleErrorLabel()
             }
         }

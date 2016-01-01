@@ -24,7 +24,7 @@
                                     <constraint firstAttribute="height" constant="35" id="xqv-pv-dbC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="pEH-1O-2l7">
                                 <rect key="frame" x="0.0" y="145" width="600" height="35"/>
@@ -32,7 +32,7 @@
                                     <constraint firstAttribute="height" constant="35" id="QZN-Ao-gUY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cXU-Gt-HGn">
                                 <rect key="frame" x="292" y="210" width="16" height="21"/>
@@ -99,7 +99,7 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="FBLoginButton" destination="KYd-1J-pys" id="Ys5-HU-wef"/>
-                        <outlet property="loginErrorLabel" destination="ToU-em-U00" id="2bB-yn-f37"/>
+                        <outlet property="errorLabel" destination="ToU-em-U00" id="E9Z-99-32K"/>
                         <outlet property="passwordTextField" destination="pEH-1O-2l7" id="iHG-u9-K8g"/>
                         <outlet property="usernameTextField" destination="bbI-2p-ymT" id="VE7-EE-Sgj"/>
                         <segue destination="pKT-YI-Io7" kind="show" identifier="registerUserSegue" id="Kds-1a-nt1"/>
@@ -218,7 +218,7 @@
                                             <constraint firstAttribute="height" constant="35" id="2Un-eN-dFO"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2jg-VB-EKr">
                                         <rect key="frame" x="0.0" y="380" width="600" height="35"/>
@@ -226,7 +226,7 @@
                                             <constraint firstAttribute="height" constant="35" id="wn7-A4-SS5"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Age" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cES-7f-vL8">
                                         <rect key="frame" x="0.0" y="493" width="600" height="35"/>
@@ -250,7 +250,7 @@
                                             <constraint firstAttribute="height" constant="35" id="PeV-MQ-MuJ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3nJ-0I-TCH">
                                         <rect key="frame" x="0.0" y="337" width="600" height="35"/>
@@ -258,7 +258,7 @@
                                             <constraint firstAttribute="height" constant="35" id="g68-Tr-b0a"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMW-9w-njb">
                                         <rect key="frame" x="264" y="151" width="72" height="72"/>
@@ -361,10 +361,10 @@
                         <outlet property="ageTextField" destination="cES-7f-vL8" id="LXk-Nn-W0z"/>
                         <outlet property="displayNameTextField" destination="nNJ-9L-Uvc" id="gxQ-vp-YEq"/>
                         <outlet property="emailTextField" destination="3nJ-0I-TCH" id="7H7-fA-YxI"/>
+                        <outlet property="errorLabel" destination="CQ3-MH-BIr" id="Hyu-mo-vBL"/>
                         <outlet property="genderPickerView" destination="XjO-Qs-hZq" id="2vn-cd-ll6"/>
                         <outlet property="genderTextField" destination="CKo-g5-goS" id="3c1-MZ-iiM"/>
                         <outlet property="imageButton" destination="vMW-9w-njb" id="yez-Cy-HEi"/>
-                        <outlet property="loginErrorLabel" destination="CQ3-MH-BIr" id="mPy-jb-9P0"/>
                         <outlet property="passwordTextField" destination="2jg-VB-EKr" id="0zh-wf-pVO"/>
                         <outlet property="usernameTextField" destination="Mwf-AM-Mts" id="W9g-8S-h72"/>
                         <outlet property="wrapperScrollView" destination="IvN-JQ-Uyg" id="oXp-h2-PS8"/>
@@ -447,6 +447,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="cuV-J2-Zem"/>
-        <segue reference="g7N-GZ-OwA"/>
+        <segue reference="iOD-pi-KW3"/>
     </inferredMetricsTieBreakers>
 </document>
