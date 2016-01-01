@@ -12,6 +12,7 @@ import Parse
 class MainTableViewController: UITableViewController {
     
     var currentUser: PFUser?
+    var gyms = Gyms()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +48,15 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return gyms.list.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        
+        cell.textLabel!.text = gyms.list[indexPath.row].info["name"]
+        cell.detailTextLabel!.text = gyms.list[indexPath.row].info["location"]
+        cell.imageView?.image = UIImage(named: "Icon-72")
+        print(UIImage(named: "Icon-72"))
         return cell
     }
 }

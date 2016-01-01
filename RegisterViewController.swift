@@ -126,7 +126,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func resetScrollView(){
-        let contentInsets: UIEdgeInsets = UIEdgeInsetsZero
+        let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
         self.wrapperScrollView.contentInset = contentInsets
         self.wrapperScrollView.scrollIndicatorInsets = contentInsets
     }
