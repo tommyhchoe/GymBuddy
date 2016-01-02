@@ -40,6 +40,7 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
     
     //MARK: - Helper Methods
     
+    //User clicked send button
     func sendUserInfoByEmail(){
         
         //Hide errorLabel before checking if any TextField is incomplete
@@ -48,7 +49,12 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
         //Disable barButtonItem
         self.navigationItem.rightBarButtonItem?.enabled = false
         
+        //Reset border around textField
+        self.emailTextField.layer.borderWidth = 0.0
+        
         let greenColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
+        
+        //Check if email field is empty first
         if (emailTextField.text != ""){
             self.errorLabel.text = "Alright. We sent your login information"
             self.errorLabel.backgroundColor = greenColor
@@ -57,6 +63,8 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
             if (self.errorLabel.backgroundColor! == greenColor){
                 self.errorLabel.backgroundColor = UIColor.redColor()
             }
+            self.emailTextField.layer.borderWidth = 1.25
+            self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
             self.errorLabel.text = "You didn't enter your email"
             self.prepareToPresentError()
         }

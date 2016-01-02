@@ -112,8 +112,24 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //Disable login button
         self.navigationItem.rightBarButtonItem?.enabled = false
         
+        //Clear red borders around textFields
+        self.usernameTextField.layer.borderWidth = 0.0
+        self.passwordTextField.layer.borderWidth = 0.0
+        
+        //Check if any fields are missing first
         if (self.usernameTextField.text == "" || self.passwordTextField.text == ""){
             self.errorLabel.text = "Missing field!"
+            
+            if (self.usernameTextField.text == ""){
+                self.usernameTextField.layer.borderWidth = 1.25
+                self.usernameTextField.layer.borderColor = UIColor.redColor().CGColor
+            }
+            
+            if (self.passwordTextField.text == ""){
+                self.passwordTextField.layer.borderWidth = 1.25
+                self.passwordTextField.layer.borderColor = UIColor.redColor().CGColor
+            }
+            
             if (self.errorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
                 self.errorLabel.backgroundColor = UIColor.redColor()
             }

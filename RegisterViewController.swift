@@ -120,12 +120,44 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     //User presses the register button
     func registerAsNewUser(){
         
+        //Hide errorLabel before checking
         if (self.errorLabelHeightConstraint.constant == 30.0){self.toggleErrorLabel()}
         
+        //Disable login button
         self.navigationItem.rightBarButtonItem?.enabled = false
         
-        //Check if any TextFields are empty
+        //Clear any red borders around textFields
+        self.imageButton.layer.borderWidth = 0.0
+        self.displayNameTextField.layer.borderWidth = 0.0
+        self.usernameTextField.layer.borderWidth = 0.0
+        self.emailTextField.layer.borderWidth = 0.0
+        self.passwordTextField.layer.borderWidth = 0.0
+        self.ageTextField.layer.borderWidth = 0.0
+        self.genderTextField.layer.borderWidth = 0.0
+        
+        //Check if any TextFields are empty first
         if (!didChangeImage || self.displayNameTextField.text == "" || self.usernameTextField.text == "" || self.emailTextField.text == "" || self.passwordTextField.text == "" || self.ageTextField.text == "" || self.genderTextField.text == ""){
+            if (!didChangeImage){
+                self.changeToErrorBorder(self.imageButton)
+            }
+            if (self.displayNameTextField.text == ""){
+                self.changeToErrorBorder(self.displayNameTextField)
+            }
+            if (self.usernameTextField.text == ""){
+                self.changeToErrorBorder(self.usernameTextField)
+            }
+            if (self.emailTextField.text == ""){
+                self.changeToErrorBorder(self.emailTextField)
+            }
+            if (self.passwordTextField.text == ""){
+                self.changeToErrorBorder(self.passwordTextField)
+            }
+            if (self.ageTextField.text == ""){
+                self.changeToErrorBorder(self.ageTextField)
+            }
+            if (self.genderTextField.text == ""){
+                self.changeToErrorBorder(self.genderTextField)
+            }
             self.errorLabel.text = "Missing fields"
             self.prepareToPresentError()
         }else if (self.usernameTextField.text!.characters.count <= 7){
@@ -181,6 +213,12 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                     }
                 })
         }
+    }
+    
+    //Change border of input objects
+    func changeToErrorBorder(object: AnyObject){
+        object.layer.borderWidth = 1.25
+        object.layer.borderColor = UIColor.redColor().CGColor
     }
     
     func prepareToPresentError(){
