@@ -9,13 +9,14 @@
 import UIKit
 
 class ForgotViewController: UIViewController, UITextFieldDelegate {
+    
     @IBOutlet weak var emailTextField: UITextField!
 
-    @IBOutlet weak var loginErrorLabel: UILabel!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var errorLabelHeightConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.emailTextField.delegate = self
 
         self.configView()
     }
@@ -24,10 +25,12 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
     
     func configView(){
         
+        //Add all delegates
+        self.emailTextField.delegate = self
+        
         //Add intent to TextField
-        let paddingView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
-        emailTextField.leftView = paddingView
-        emailTextField.leftViewMode = UITextFieldViewMode.Always
+        self.emailTextField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 30.0))
+        self.emailTextField.leftViewMode = UITextFieldViewMode.Always
         
         //Setup navigationItem
         self.navigationItem.title = "Enter email"
@@ -35,37 +38,48 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    //MARK: - Helper Methods
+    
     func sendUserInfoByEmail(){
         
-        //Hide loginErrorLabel before checking if any TextField is incomplete
-        if(self.loginErrorLabel.hidden == false){self.loginErrorLabel.hidden = true}
+        //Hide errorLabel before checking if any TextField is incomplete
+        if(self.errorLabelHeightConstraint.constant == 30.0){self.toggleErrorLabel()}
         
+        //Disable barButtonItem
+        self.navigationItem.rightBarButtonItem?.enabled = false
+        
+        let greenColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
         if (emailTextField.text != ""){
-            self.loginErrorLabel.text = "Alright. We sent your login information"
-            self.loginErrorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
-            self.toggleErrorLabel()
+            self.errorLabel.text = "Alright. We sent your login information"
+            self.errorLabel.backgroundColor = greenColor
+            self.prepareToPresentError()
         }else{
-            if (self.loginErrorLabel.backgroundColor! == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
-                self.loginErrorLabel.backgroundColor = UIColor.redColor()
+            if (self.errorLabel.backgroundColor! == greenColor){
+                self.errorLabel.backgroundColor = UIColor.redColor()
             }
-            self.loginErrorLabel.text = "You didn't enter your email"
-            self.toggleErrorLabel()
+            self.errorLabel.text = "You didn't enter your email"
+            self.prepareToPresentError()
         }
     }
     
+    func prepareToPresentError(){
+        self.navigationItem.rightBarButtonItem?.enabled = true
+        self.toggleErrorLabel()
+    }
+    
     func toggleErrorLabel(){
-        if (self.loginErrorLabel.hidden == true){
-            self.loginErrorLabel.hidden = false
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.errorLabelHeightConstraint.constant -= 30.0
         }else{
-            self.loginErrorLabel.hidden = true
+            self.errorLabelHeightConstraint.constant += 30.0
         }
     }
     
     //MARK: - UITextField Delegate Method(s)
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if (self.loginErrorLabel.hidden == false){
-            self.loginErrorLabel.hidden = true
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.toggleErrorLabel()
         }
     }
 }

@@ -18,6 +18,7 @@ class MainTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.configView()
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -33,11 +34,6 @@ class MainTableViewController: UITableViewController {
     func logoutUser(){
         print(currentUser)
         PFUser.logOut()
-        if let cUser = PFUser.currentUser(){
-            print(cUser)
-        }else {
-            print("There is no user logged in")
-        }
         performSegueWithIdentifier("logoutUserSegue", sender: self)
     }
     
@@ -56,7 +52,6 @@ class MainTableViewController: UITableViewController {
         cell.textLabel!.text = gyms.list[indexPath.row].info["name"]
         cell.detailTextLabel!.text = gyms.list[indexPath.row].info["location"]
         cell.imageView?.image = UIImage(named: "Icon-72")
-        print(UIImage(named: "Icon-72"))
         return cell
     }
 }

@@ -13,34 +13,41 @@ import FBSDKLoginKit
 import ParseFacebookUtilsV4
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
+    
     @IBOutlet weak var errorLabel: UILabel!
+    
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var FBLoginButton: UIButton!
+    @IBOutlet weak var errorLabelHeightConstraint: NSLayoutConstraint!
     
     var errorLabelIsHidden = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.usernameTextField.delegate = self
-        self.passwordTextField.delegate = self
-    
         self.configView()
     }
     
     override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(false)
+        super.viewWillAppear(animated)
         
         //Make navigationItem title reappear
         self.navigationItem.title = "Sign In"
         
         //Set errorLabel visibility
-        self.errorLabel.hidden = self.errorLabelIsHidden
-        if (self.errorLabelIsHidden == false){
+        if (!self.errorLabelIsHidden){
             self.errorLabel.text = "Your account has been created!"
             self.errorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
+            self.toggleErrorLabel()
+            self.errorLabelIsHidden = true
+        }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.toggleErrorLabel()
         }
     }
     
@@ -73,13 +80,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     func configView(){
         
+        //Set all delegates
+        self.usernameTextField.delegate = self
+        self.passwordTextField.delegate = self
+        
         //Add indent to each TextField
-        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        usernameTextField.leftView = paddingView1
-        usernameTextField.leftViewMode = UITextFieldViewMode.Always
-        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        passwordTextField.leftView = paddingView2
-        passwordTextField.leftViewMode = UITextFieldViewMode.Always
+        let textFieldList = [self.usernameTextField, self.passwordTextField]
+        for textField in textFieldList{
+            textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+            textField.leftViewMode = UITextFieldViewMode.Always
+        }
         
         //Setup navigationItem for ViewController
         self.navigationItem.title = "Sign In"
@@ -97,20 +107,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     func logInUser(){
         
         //Hide errorLabel before checking TextFields
-        if (self.errorLabel.hidden == false){self.errorLabel.hidden = true}
+        if (self.errorLabelHeightConstraint.constant == 30.0){toggleErrorLabel()}
         
-        if (usernameTextField.text == ""){
-            self.errorLabel.text = "Username not entered!"
+        //Disable login button
+        self.navigationItem.rightBarButtonItem?.enabled = false
+        
+        if (self.usernameTextField.text == "" || self.passwordTextField.text == ""){
+            self.errorLabel.text = "Missing field!"
             if (self.errorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
                 self.errorLabel.backgroundColor = UIColor.redColor()
             }
-            self.toggleErrorLabel()
-        }else if (passwordTextField.text == ""){
-            self.errorLabel.text = "Password not entered!"
-            if (self.errorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
-                self.errorLabel.backgroundColor = UIColor.redColor()
-            }
-            self.toggleErrorLabel()
+            self.prepareToPresentError()
         }else{
             PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){
                 (success, error) in
@@ -118,7 +125,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                     self.performSegueWithIdentifier("loginUserSegue", sender: self)
                 }else{
                     self.errorLabel.text = "Username/Password combination is not recognized"
-                    self.toggleErrorLabel()
+                    self.prepareToPresentError()
                 }
             }
         }
@@ -128,11 +135,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         performSegueWithIdentifier("registerUserSegue", sender: self)
     }
     
+    func prepareToPresentError(){
+        self.navigationItem.rightBarButtonItem?.enabled = true
+        self.toggleErrorLabel()
+    }
+    
     func toggleErrorLabel(){
-        if (self.errorLabel.hidden == true){
-            self.errorLabel.hidden = false
+        if (self.errorLabelHeightConstraint.constant == 0.0){
+            UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+                self.errorLabelHeightConstraint.constant += 30.0
+                self.view.layoutIfNeeded()
+                }, completion: nil)
         }else{
-            self.errorLabel.hidden = true
+            UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
+                self.errorLabelHeightConstraint.constant -= 30.0
+                self.view.layoutIfNeeded()
+                }, completion: nil)
         }
     }
     
@@ -143,8 +161,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //MARK: - TextField Delegate Methods
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if (self.errorLabel.hidden == false){
-            self.errorLabel.hidden = true
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.toggleErrorLabel()
         }
     }
     
@@ -161,6 +179,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //MARK: - IBAction Methods
     @IBAction func FBLoginButtonPressed(sender: AnyObject) {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"]) { (user: PFUser?, error: NSError?) -> Void in
+            
             if let user = user{
                 if user.isNew{
                     print("User signed up and logged in through FB")

@@ -25,39 +25,24 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var ageTextField: UITextField!
     
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var errorLabelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var genderPickerView: UIPickerView!
     @IBOutlet weak var agePickerView: UIPickerView!
     
-    let defaultImage: String = "Icon-73"
     var didChangeImage = false
     
     let imagePicker = UIImagePickerController()
     var keyboardSize: CGSize?
     
-    var errorLabelIsHidden = true
-    let genderOptions = ["Male", "Female", "Other", "Would Rather Not Say"]
-    let ageOptions = [13,14,15,16,17]
+    let genderOptions = PickerOptionList().genderOptions
+    let ageOptions = PickerOptionList().ageOptions
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.imagePicker.delegate = self
-        self.usernameTextField.delegate = self
-        self.emailTextField.delegate = self
-        self.displayNameTextField.delegate = self
-        self.passwordTextField.delegate = self
-        self.genderTextField.delegate = self
-        self.ageTextField.delegate = self
-        
         self.configView()
         self.registerForKeyboardNotifications()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(false)
-        //Set errorLabel visibility
-        self.errorLabel.hidden = self.errorLabelIsHidden
     }
     
     override func viewDidLayoutSubviews() {
@@ -86,38 +71,38 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func configView(){
         
+        //Set all delegates
+        self.genderPickerView.delegate = self
+        self.agePickerView.delegate = self
+        self.imagePicker.delegate = self
+        self.usernameTextField.delegate = self
+        self.emailTextField.delegate = self
+        self.displayNameTextField.delegate = self
+        self.passwordTextField.delegate = self
+        self.genderTextField.delegate = self
+        self.ageTextField.delegate = self
+        
         //Add default image to profile pic
-        self.imageButton.setImage(UIImage(named: self.defaultImage), forState: UIControlState.Normal)
+        self.imageButton.setImage(UIImage(named: "Icon-73"), forState: UIControlState.Normal)
         
         //Add indent to each TextField
-        let paddingView1 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        self.emailTextField.leftView = paddingView1
-        self.emailTextField.leftViewMode = .Always
-        let paddingView2 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        self.displayNameTextField.leftView = paddingView2
-        self.displayNameTextField.leftViewMode = .Always
-        let paddingView3 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        self.passwordTextField.leftView = paddingView3
-        self.passwordTextField.leftViewMode = .Always
-        let paddingView4 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        self.genderTextField.leftView = paddingView4
-        self.genderTextField.leftViewMode = .Always
+        let textFieldList = [self.emailTextField,
+                            self.displayNameTextField,
+                            self.passwordTextField,
+                            self.genderTextField,
+                            self.ageTextField,
+                            self.usernameTextField]
+        
+        for textField in textFieldList{
+            textField.leftView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
+            textField.leftViewMode = .Always
+        }
         self.genderTextField.text = self.genderOptions[0]
-        let paddingView5 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        self.ageTextField.leftView = paddingView5
-        self.ageTextField.leftViewMode = .Always
-        let paddingView6 = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 5.0, height: 0.0))
-        self.usernameTextField.leftView = paddingView6
-        self.usernameTextField.leftViewMode = .Always
         
         //Setup navigationItem
         self.navigationItem.title = "Register"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("registerAsNewUser"))
-        
-        //Setup UIPickerView
-        self.genderPickerView.delegate = self
-        self.agePickerView.delegate = self
-        
+    
         //Setup FBLoginButton
         self.FBLoginButton.setTitle("Register with Facebook", forState: UIControlState.Normal)
         self.FBLoginButton.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
@@ -125,50 +110,39 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.FBLoginButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
     }
     
+    //Resets the scrollView's content insets
     func resetScrollView(){
         let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
         self.wrapperScrollView.contentInset = contentInsets
         self.wrapperScrollView.scrollIndicatorInsets = contentInsets
     }
     
+    //User presses the register button
     func registerAsNewUser(){
         
-        if (self.errorLabel.hidden == false){self.errorLabel.hidden = true}
+        if (self.errorLabelHeightConstraint.constant == 30.0){self.toggleErrorLabel()}
         
         self.navigationItem.rightBarButtonItem?.enabled = false
         
         //Check if any TextFields are empty
-        if (!didChangeImage){
-            self.errorLabel.text = "Missing profile pic"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }else if (displayNameTextField.text == ""){
-            self.errorLabel.text = "Missing display name"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }else if (usernameTextField.text == ""){
-            self.errorLabel.text = "Missing username"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }else if (emailTextField.text == ""){
-            self.errorLabel.text = "Missing email"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }else if (passwordTextField.text == ""){
-            self.errorLabel.text = "Missing password"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }else if (ageTextField.text == ""){
-            self.errorLabel.text = "Missing age"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
-        }else if (genderTextField.text == ""){
-            self.errorLabel.text = "Missing gender"
-            self.toggleErrorLabel()
-            self.navigationItem.rightBarButtonItem?.enabled = true
+        if (!didChangeImage || self.displayNameTextField.text == "" || self.usernameTextField.text == "" || self.emailTextField.text == "" || self.passwordTextField.text == "" || self.ageTextField.text == "" || self.genderTextField.text == ""){
+            self.errorLabel.text = "Missing fields"
+            self.prepareToPresentError()
+        }else if (self.usernameTextField.text!.characters.count <= 7){
+            self.errorLabel.text = "Make sure that username has more than 7 characters."
+            self.prepareToPresentError()
+        }else if (self.passwordTextField.text!.characters.count <= 7){
+            self.errorLabel.text = "Make sure that password has more than 7 characters."
+            self.prepareToPresentError()
         }else{
             //Store new user info in Parse Core
-            self.createNewUser(self.usernameTextField.text!, displayName: self.displayNameTextField.text!, email: self.emailTextField.text!, profilePic: self.imageButton.imageView!.image!, password: self.passwordTextField.text!, age: self.ageTextField.text!, gender: self.genderTextField.text!)
+            self.createNewUser(self.usernameTextField.text!,
+                displayName: self.displayNameTextField.text!,
+                email: self.emailTextField.text!,
+                profilePic: self.imageButton.imageView!.image!,
+                password: self.passwordTextField.text!,
+                age: self.ageTextField.text!,
+                gender: self.genderTextField.text!)
         }
     }
     
@@ -203,18 +177,22 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                             self.errorLabel.text = "Something went wrong. Try again."
                             break
                         }
-                        self.toggleErrorLabel()
-                        self.navigationItem.rightBarButtonItem?.enabled = true
+                        self.prepareToPresentError()
                     }
                 })
         }
     }
     
+    func prepareToPresentError(){
+        self.navigationItem.rightBarButtonItem?.enabled = true
+        self.toggleErrorLabel()
+    }
+    
     func toggleErrorLabel(){
-        if (self.errorLabel.hidden == true){
-            self.errorLabel.hidden = false
-        }else{
-            self.errorLabel.hidden = true
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.errorLabelHeightConstraint.constant -= 30.0
+        }else {
+            self.errorLabelHeightConstraint.constant += 30.0
         }
     }
     
@@ -250,8 +228,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func textFieldDidBeginEditing(textField: UITextField){
-        if (self.errorLabel.hidden == false){
-            self.errorLabel.hidden = true
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.toggleErrorLabel()
         }
     
         //If active text is invisible, scroll it so it's visible
@@ -265,8 +243,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func textFieldDidEndEditing(textField: UITextField){
-        if (self.errorLabel.hidden == false){
-            self.errorLabel.hidden = true
+        if (self.errorLabelHeightConstraint.constant == 30.0){
+            self.toggleErrorLabel()
         }
     }
     
@@ -282,6 +260,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
     
+    //Whenever user presses the return button
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if (textField.isEqual(self.displayNameTextField)){
             self.usernameTextField.becomeFirstResponder()
