@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class ForgotViewController: UIViewController, UITextFieldDelegate {
     
@@ -53,21 +54,37 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
         self.emailTextField.layer.borderWidth = 0.0
         
         let greenColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
-        
+
         //Check if email field is empty first
-        if (emailTextField.text != ""){
-            self.errorLabel.text = "Alright. We sent your login information"
-            self.errorLabel.backgroundColor = greenColor
-            self.prepareToPresentError()
-        }else{
-            if (self.errorLabel.backgroundColor! == greenColor){
-                self.errorLabel.backgroundColor = UIColor.redColor()
-            }
+        if self.emailTextField.text == ""{
             self.emailTextField.layer.borderWidth = 1.25
             self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
             self.errorLabel.text = "You didn't enter your email"
-            self.prepareToPresentError()
+            self.errorLabel.backgroundColor = UIColor.redColor()
+        }else {
+            let query = PFQuery(className: "_User")
+            query.whereKey("email", equalTo: self.emailTextField.text!)
+            query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+                if error == nil{
+                    if objects!.count > 0{
+                        self.errorLabel.text = "Alright. We sent your login information"
+                        self.errorLabel.backgroundColor = greenColor
+                        
+                    }else{
+                        self.errorLabel.text = "Email not found"
+                        self.emailTextField.layer.borderWidth = 1.25
+                        self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
+                        self.errorLabel.backgroundColor = UIColor.redColor()
+                    }
+                }else{
+                    self.errorLabel.text = "Oops. There was an error. Try again please"
+                    self.emailTextField.layer.borderWidth = 1.25
+                    self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
+                    self.errorLabel.backgroundColor = UIColor.redColor()
+                }
+            })
         }
+        self.prepareToPresentError()
     }
     
     func prepareToPresentError(){
@@ -76,7 +93,7 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
     }
     
     func toggleErrorLabel(){
-        if (self.errorLabelHeightConstraint.constant == 30.0){
+        if self.errorLabelHeightConstraint.constant == 30.0{
             self.errorLabelHeightConstraint.constant -= 30.0
         }else{
             self.errorLabelHeightConstraint.constant += 30.0
@@ -86,7 +103,7 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
     //MARK: - UITextField Delegate Method(s)
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if (self.errorLabelHeightConstraint.constant == 30.0){
+        if self.errorLabelHeightConstraint.constant == 30.0{
             self.toggleErrorLabel()
         }
     }

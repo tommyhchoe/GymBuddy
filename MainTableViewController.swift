@@ -23,21 +23,27 @@ class MainTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        //User currently using the app
-        currentUser = PFUser.currentUser()
+
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.performSegueWithIdentifier("showLoginSegue", sender: self)
+        //User currently using the app
+        currentUser = PFUser.currentUser()
+        if currentUser != nil{
+            print("User is logged in!")
+        }else{
+            self.performSegueWithIdentifier("showLoginSegue", sender: self)
+        }
     }
     
     //MARK: Helper Methods
     
     func configView(){
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logoutUser"))
+        
+        //Setup navigationBar
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: Selector("addMyGym"))
         self.navigationItem.title = "My Gym"
         
         //Bind sidebar menu to the menu button
@@ -45,6 +51,10 @@ class MainTableViewController: UITableViewController {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: Selector("revealToggle:"))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
+    }
+    
+    func addMyGym(){
+        print("Adding my gym")
     }
     
     func logoutUser(){
