@@ -18,23 +18,41 @@ class MainTableViewController: UITableViewController {
         super.viewDidLoad()
         
         self.configView()
-
+        
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //User currently using the app
         currentUser = PFUser.currentUser()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.performSegueWithIdentifier("showLoginSegue", sender: self)
     }
     
     //MARK: Helper Methods
     
     func configView(){
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("logoutUser"))
+        self.navigationItem.title = "My Gym"
+        
+        //Bind sidebar menu to the menu button
+        if self.revealViewController() != nil{
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: Selector("revealToggle:"))
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            
+            //Customize sidebar menu
+            self.revealViewController().rearViewRevealWidth = 170
+        }
     }
     
     func logoutUser(){
         print(currentUser)
-        PFUser.logOut()
-        performSegueWithIdentifier("logoutUserSegue", sender: self)
+        self.performSegueWithIdentifier("logoutUserSegue", sender: self)
     }
     
     //MARK: UITableViewDataSource && UITableViewDelegate Delegate Methods

@@ -67,13 +67,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
         }
-        
-        if (segue.identifier == "loginUserSegue"){
-            if let dvc = segue.destinationViewController as? MainTableViewController{
-                dvc.navigationItem.title = "My Gyms"
-                dvc.navigationItem.setHidesBackButton(true, animated: false)
-            }
-        }
     }
     
     //MARK: - Helper Methods
@@ -138,13 +131,19 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){
                 (success, error) in
                 if (success != nil){
-                    self.performSegueWithIdentifier("loginUserSegue", sender: self)
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.loginWasSuccessful()
+                    self.navigationItem.rightBarButtonItem?.enabled = true
                 }else{
                     self.errorLabel.text = "Username/Password combination is not recognized"
                     self.prepareToPresentError()
                 }
             }
         }
+    }
+    
+    func loginWasSuccessful(){
+        print("login was Successful")
     }
     
     func registerNewUser(){
