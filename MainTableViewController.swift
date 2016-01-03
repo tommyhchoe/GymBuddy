@@ -44,9 +44,6 @@ class MainTableViewController: UITableViewController {
         if self.revealViewController() != nil{
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: Selector("revealToggle:"))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
-            //Customize sidebar menu
-            self.revealViewController().rearViewRevealWidth = 170
         }
     }
     
@@ -69,7 +66,7 @@ class MainTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
         cell.textLabel!.text = gyms.list[indexPath.row].info["name"]
         cell.detailTextLabel!.text = gyms.list[indexPath.row].info["location"]
-        cell.imageView?.image = UIImage(named: "Icon-72")
+        cell.imageView?.image = UIImage(named: "Home-25")
         return cell
     }
 }

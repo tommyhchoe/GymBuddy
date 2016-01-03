@@ -41,6 +41,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setDelegates()
         self.configView()
         self.registerForKeyboardNotifications()
     }
@@ -71,19 +72,13 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func configView(){
         
-        //Set all delegates
-        self.genderPickerView.delegate = self
-        self.agePickerView.delegate = self
-        self.imagePicker.delegate = self
-        self.usernameTextField.delegate = self
-        self.emailTextField.delegate = self
-        self.displayNameTextField.delegate = self
-        self.passwordTextField.delegate = self
-        self.genderTextField.delegate = self
-        self.ageTextField.delegate = self
-        
-        //Add default image to profile pic
-        self.imageButton.setImage(UIImage(named: "Icon-73"), forState: UIControlState.Normal)
+        //Setup profile pic
+        self.imageButton.setImage(UIImage(named: "Add User-50"), forState: UIControlState.Normal)
+        self.imageButton.layer.borderWidth = 1.25
+        self.imageButton.layer.borderColor = UIColor.whiteColor().CGColor
+        self.imageButton.layer.masksToBounds = false
+        self.imageButton.layer.cornerRadius = self.imageButton.frame.size.width/2
+        self.imageButton.clipsToBounds = true
         
         //Add indent to each TextField
         let textFieldList = [self.emailTextField,
@@ -110,6 +105,20 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.FBLoginButton.titleLabel?.font = UIFont.systemFontOfSize(14.0)
     }
     
+    func setDelegates(){
+        
+        //Set all delegates
+        self.genderPickerView.delegate = self
+        self.agePickerView.delegate = self
+        self.imagePicker.delegate = self
+        self.usernameTextField.delegate = self
+        self.emailTextField.delegate = self
+        self.displayNameTextField.delegate = self
+        self.passwordTextField.delegate = self
+        self.genderTextField.delegate = self
+        self.ageTextField.delegate = self
+    }
+    
     //Resets the scrollView's content insets
     func resetScrollView(){
         let contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 50.0, right: 0.0)
@@ -127,7 +136,7 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
         self.navigationItem.rightBarButtonItem?.enabled = false
         
         //Clear any red borders around textFields
-        self.imageButton.layer.borderWidth = 0.0
+        self.imageButton.layer.borderColor = UIColor.whiteColor().CGColor
         self.displayNameTextField.layer.borderWidth = 0.0
         self.usernameTextField.layer.borderWidth = 0.0
         self.emailTextField.layer.borderWidth = 0.0
@@ -205,6 +214,8 @@ class RegisterViewController: UIViewController, UIImagePickerControllerDelegate,
                             self.errorLabel.text = "Email is already taken."
                         case PFErrorCode.ErrorUsernameTaken.rawValue:
                             self.errorLabel.text = "Username is already taken."
+                        case PFErrorCode.ErrorInvalidEmailAddress.rawValue:
+                            self.errorLabel.text = "Please enter a valid email address."
                         default:
                             self.errorLabel.text = "Something went wrong. Try again."
                             break
