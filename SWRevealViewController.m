@@ -765,7 +765,7 @@ const int FrontViewPositionNone = 0xff;
 }
 
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     // we could have simply not implemented this, but we choose to call super to make explicit that we
     // want the default behavior.
@@ -1378,7 +1378,8 @@ const int FrontViewPositionNone = 0xff;
     __weak SWRevealViewController *theSelf = self;
     if ( animated )
     {
-        _enqueue( [theSelf _setFrontViewPosition:preReplacementPosition withDuration:firstDuration] );
+        //THIS HAS BEEN MODIFIED TO PREVENT PUSH ANIMATIONS
+//        _enqueue( [theSelf _setFrontViewPosition:preReplacementPosition withDuration:firstDuration] );
         _enqueue( [theSelf _performTransitionOperation:SWRevealControllerOperationReplaceFrontController withViewController:newFrontViewController animated:NO] );
         _enqueue( [theSelf _setFrontViewPosition:FrontViewPositionLeft withDuration:duration] );
     }

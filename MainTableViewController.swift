@@ -46,17 +46,13 @@ class MainTableViewController: UITableViewController {
         
         //Bind sidebar menu to the menu button
         if self.revealViewController() != nil{
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Menu", style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: Selector("revealToggle:"))
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "HMenu-20"), style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: Selector("revealToggle:"))
             self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
     }
     
     func addMyGym(){
         self.performSegueWithIdentifier("showGymSearchSegue", sender: self)
-    }
-    
-    func logoutUser(){
-        self.performSegueWithIdentifier("logoutUserSegue", sender: self)
     }
     
     //MARK: UITableViewDataSource && UITableViewDelegate Delegate Methods

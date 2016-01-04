@@ -210,7 +210,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <segue destination="Eoc-Qi-Lo1" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="Mgj-qf-OII"/>
+                                            <segue destination="Eoc-Qi-Lo1" kind="custom" identifier="goToHomeSegue" customClass="SWRevealViewControllerSeguePushController" animates="NO" id="Mgj-qf-OII"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" selectionStyle="default" indentationWidth="10" textLabel="gIT-Ra-3Tj" imageView="4jY-jy-ZCf" style="IBUITableViewCellStyleDefault" id="1ha-Yh-Qs6">
@@ -235,7 +235,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <segue destination="Se7-BO-X5K" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="y3h-Q1-28p"/>
+                                            <segue destination="Se7-BO-X5K" kind="custom" identifier="goToProfileSegue" customClass="SWRevealViewControllerSeguePushController" id="y3h-Q1-28p"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" selectionStyle="default" indentationWidth="10" textLabel="NeA-3c-Uao" imageView="7bu-jn-emZ" style="IBUITableViewCellStyleDefault" id="gaa-bK-WHy">
@@ -260,7 +260,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <segue destination="9hE-Rv-PyG" kind="custom" customClass="SWRevealViewControllerSeguePushController" id="JUP-AG-bVs"/>
+                                            <segue destination="9hE-Rv-PyG" kind="custom" identifier="goToSettingsSegue" customClass="SWRevealViewControllerSeguePushController" id="JUP-AG-bVs"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="rAo-NR-cd5" imageView="m7M-LL-fcy" style="IBUITableViewCellStyleDefault" id="JyY-nM-Zjc">
@@ -285,7 +285,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <segue destination="45x-uF-u8L" kind="presentation" identifier="logoutUserSegue" id="5ha-fx-9zc"/>
+                                            <segue destination="Eoc-Qi-Lo1" kind="custom" identifier="logoutUserSegue" customClass="SWRevealViewControllerSeguePushController" animates="NO" id="Gon-5m-yT2"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
@@ -321,7 +321,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Ea-E9-l79" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="234" y="101"/>
+            <point key="canvasLocation" x="250" y="101"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="cAW-Mk-CRM">
@@ -369,6 +369,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JMp-Or-Mhw">
+                            <rect key="frame" x="0.0" y="136" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <state key="normal" title="Don't see your gym? Add it">
+                                <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="Tqz-Gf-BTY" detailTextLabel="Hj9-c6-I2w" style="IBUITableViewCellStyleValue2" id="ur9-tC-HST">
                                 <rect key="frame" x="0.0" y="92" width="600" height="44"/>
@@ -437,7 +445,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oops.. There was a problem." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CQ3-MH-BIr">
-                                <rect key="frame" x="0.0" y="64" width="600" height="0.0"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="0.0"/>
                                 <color key="backgroundColor" red="1" green="0.1094318604" blue="0.054835341369999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" id="4t2-rv-5Xh"/>
@@ -447,7 +455,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IvN-JQ-Uyg">
-                                <rect key="frame" x="0.0" y="72" width="600" height="528"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="572"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pa0-ck-jiJ">
                                         <rect key="frame" x="0.0" y="45" width="600" height="40"/>
@@ -728,7 +736,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yNc-XI-Obf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1636" y="-313"/>
+            <point key="canvasLocation" x="1712" y="-337"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GsX-0i-d9L">
@@ -764,7 +772,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VXD-5k-x5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2597" y="-999"/>
+            <point key="canvasLocation" x="2529" y="-1127"/>
         </scene>
     </scenes>
     <resources>
@@ -774,8 +782,7 @@
         <image name="Settings Filled-25" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Mgj-qf-OII"/>
-        <segue reference="hGB-hU-EzY"/>
         <segue reference="cuV-J2-Zem"/>
+        <segue reference="Mgj-qf-OII"/>
     </inferredMetricsTieBreakers>
 </document>
