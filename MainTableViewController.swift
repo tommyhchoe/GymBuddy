@@ -12,18 +12,16 @@ import Parse
 class MainTableViewController: UITableViewController {
     
     var currentUser: PFUser?
-    var gyms = Gyms()
+    var userGyms = UserGyms()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.configView()
-        
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -54,11 +52,10 @@ class MainTableViewController: UITableViewController {
     }
     
     func addMyGym(){
-        print("Adding my gym")
+        self.performSegueWithIdentifier("showGymSearchSegue", sender: self)
     }
     
     func logoutUser(){
-        print(currentUser)
         self.performSegueWithIdentifier("logoutUserSegue", sender: self)
     }
     
@@ -69,15 +66,25 @@ class MainTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gyms.list.count
+        return userGyms.list.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
-        cell.textLabel!.text = gyms.list[indexPath.row].info["name"]
-        cell.detailTextLabel!.text = gyms.list[indexPath.row].info["location"]
+        if let name = userGyms.list[indexPath.row]?.info["name"],
+            let location = userGyms.list[indexPath.row]?.info["location"]{
+            cell.textLabel!.text = name
+            cell.detailTextLabel!.text = location
+        }else{
+            cell.textLabel!.text = "Gym name"
+            cell.detailTextLabel!.text = "Default location"
+        }
         cell.imageView?.image = UIImage(named: "Home-25")
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
 }
 

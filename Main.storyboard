@@ -99,8 +99,8 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="FBLoginButton" destination="KYd-1J-pys" id="Ys5-HU-wef"/>
-                        <outlet property="errorLabel" destination="ToU-em-U00" id="E9Z-99-32K"/>
-                        <outlet property="errorLabelHeightConstraint" destination="QaC-5g-W8V" id="lkd-qs-uX2"/>
+                        <outlet property="messageLabel" destination="ToU-em-U00" id="51F-2B-fQz"/>
+                        <outlet property="messageLabelHeightConstraint" destination="QaC-5g-W8V" id="raY-H6-vYt"/>
                         <outlet property="passwordTextField" destination="pEH-1O-2l7" id="iHG-u9-K8g"/>
                         <outlet property="usernameTextField" destination="bbI-2p-ymT" id="VE7-EE-Sgj"/>
                         <segue destination="pKT-YI-Io7" kind="show" identifier="registerUserSegue" id="Kds-1a-nt1"/>
@@ -152,6 +152,7 @@
                     <navigationItem key="navigationItem" id="3a9-ny-jE9"/>
                     <connections>
                         <segue destination="45x-uF-u8L" kind="presentation" identifier="showLoginSegue" id="hGB-hU-EzY"/>
+                        <segue destination="FRJ-BG-Nxo" kind="presentation" identifier="showGymSearchSegue" id="oZA-4g-KXs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cOg-FR-dd3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -360,6 +361,51 @@
             </objects>
             <point key="canvasLocation" x="2352" y="1154"/>
         </scene>
+        <!--Gym Search Table View Controller-->
+        <scene sceneID="ag6-YQ-7Ys">
+            <objects>
+                <tableViewController id="Uan-fP-LCV" customClass="GymSearchTableViewController" customModule="GymBuddy" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vck-9T-IXk">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="Tqz-Gf-BTY" detailTextLabel="Hj9-c6-I2w" style="IBUITableViewCellStyleValue2" id="ur9-tC-HST">
+                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ur9-tC-HST" id="ecx-10-P0Q">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tqz-Gf-BTY">
+                                            <rect key="frame" x="15" y="14" width="91" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hj9-c6-I2w">
+                                            <rect key="frame" x="112" y="14" width="33" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Uan-fP-LCV" id="ncd-4S-XDS"/>
+                            <outlet property="delegate" destination="Uan-fP-LCV" id="H7b-Pd-yR8"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="VX6-PG-vwO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VSa-Vo-9N3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3409" y="-999"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="fQe-04-E3x">
             <objects>
@@ -404,7 +450,7 @@
                                 <rect key="frame" x="0.0" y="72" width="600" height="528"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pa0-ck-jiJ">
-                                        <rect key="frame" x="0.0" y="48" width="600" height="40"/>
+                                        <rect key="frame" x="0.0" y="45" width="600" height="40"/>
                                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Jk3-UT-dzv"/>
@@ -416,7 +462,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Display Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nNJ-9L-Uvc">
-                                        <rect key="frame" x="0.0" y="249" width="600" height="35"/>
+                                        <rect key="frame" x="0.0" y="246" width="600" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="2Un-eN-dFO"/>
                                         </constraints>
@@ -424,7 +470,7 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2jg-VB-EKr">
-                                        <rect key="frame" x="0.0" y="378" width="600" height="35"/>
+                                        <rect key="frame" x="0.0" y="375" width="600" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="wn7-A4-SS5"/>
                                         </constraints>
@@ -432,7 +478,7 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" secureTextEntry="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Age" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cES-7f-vL8">
-                                        <rect key="frame" x="0.0" y="491" width="600" height="35"/>
+                                        <rect key="frame" x="0.0" y="488" width="600" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="h1s-gu-IMJ"/>
                                         </constraints>
@@ -440,7 +486,7 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Gender" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CKo-g5-goS">
-                                        <rect key="frame" x="0.0" y="448" width="600" height="35"/>
+                                        <rect key="frame" x="0.0" y="445" width="600" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="JeT-oa-gbB"/>
                                         </constraints>
@@ -448,7 +494,7 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Mwf-AM-Mts">
-                                        <rect key="frame" x="0.0" y="292" width="600" height="35"/>
+                                        <rect key="frame" x="0.0" y="289" width="600" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="PeV-MQ-MuJ"/>
                                         </constraints>
@@ -456,7 +502,7 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3nJ-0I-TCH">
-                                        <rect key="frame" x="0.0" y="335" width="600" height="35"/>
+                                        <rect key="frame" x="0.0" y="332" width="600" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="g68-Tr-b0a"/>
                                         </constraints>
@@ -464,7 +510,7 @@
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMW-9w-njb">
-                                        <rect key="frame" x="264" y="149" width="72" height="72"/>
+                                        <rect key="frame" x="264" y="146" width="72" height="72"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="72" id="15a-JM-DyP"/>
                                             <constraint firstAttribute="height" constant="72" id="Gtu-ql-sRM"/>
@@ -475,7 +521,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k8g-Kh-vda">
-                                        <rect key="frame" x="292" y="108" width="16" height="20"/>
+                                        <rect key="frame" x="292" y="105" width="16" height="20"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -498,7 +544,7 @@
                                     <constraint firstItem="vRf-HF-z2L" firstAttribute="centerX" secondItem="IvN-JQ-Uyg" secondAttribute="centerX" id="Cn0-xo-e4B"/>
                                     <constraint firstItem="nNJ-9L-Uvc" firstAttribute="leading" secondItem="IvN-JQ-Uyg" secondAttribute="leading" id="D9q-zo-aTj"/>
                                     <constraint firstItem="2jg-VB-EKr" firstAttribute="leading" secondItem="IvN-JQ-Uyg" secondAttribute="leading" id="GjL-hP-jCh"/>
-                                    <constraint firstItem="pa0-ck-jiJ" firstAttribute="top" secondItem="vRf-HF-z2L" secondAttribute="bottom" constant="23" id="IJW-Md-zrh"/>
+                                    <constraint firstItem="pa0-ck-jiJ" firstAttribute="top" secondItem="vRf-HF-z2L" secondAttribute="bottom" constant="20" id="IJW-Md-zrh"/>
                                     <constraint firstItem="vMW-9w-njb" firstAttribute="top" secondItem="k8g-Kh-vda" secondAttribute="bottom" constant="21" id="Y64-oY-feM"/>
                                     <constraint firstAttribute="bottom" secondItem="cES-7f-vL8" secondAttribute="bottom" constant="-21" id="Z73-vi-zmu"/>
                                     <constraint firstItem="Mwf-AM-Mts" firstAttribute="centerX" secondItem="IvN-JQ-Uyg" secondAttribute="centerX" id="ZEo-yI-uI7"/>
@@ -564,11 +610,11 @@
                         <outlet property="ageTextField" destination="cES-7f-vL8" id="LXk-Nn-W0z"/>
                         <outlet property="displayNameTextField" destination="nNJ-9L-Uvc" id="gxQ-vp-YEq"/>
                         <outlet property="emailTextField" destination="3nJ-0I-TCH" id="7H7-fA-YxI"/>
-                        <outlet property="errorLabel" destination="CQ3-MH-BIr" id="Hyu-mo-vBL"/>
-                        <outlet property="errorLabelHeightConstraint" destination="4t2-rv-5Xh" id="lwf-2G-sGW"/>
                         <outlet property="genderPickerView" destination="XjO-Qs-hZq" id="2vn-cd-ll6"/>
                         <outlet property="genderTextField" destination="CKo-g5-goS" id="3c1-MZ-iiM"/>
                         <outlet property="imageButton" destination="vMW-9w-njb" id="yez-Cy-HEi"/>
+                        <outlet property="messageLabel" destination="CQ3-MH-BIr" id="xZd-bF-XnN"/>
+                        <outlet property="messageLabelHeightConstraint" destination="4t2-rv-5Xh" id="SrC-wU-2J7"/>
                         <outlet property="passwordTextField" destination="2jg-VB-EKr" id="0zh-wf-pVO"/>
                         <outlet property="usernameTextField" destination="Mwf-AM-Mts" id="W9g-8S-h72"/>
                         <outlet property="wrapperScrollView" destination="IvN-JQ-Uyg" id="oXp-h2-PS8"/>
@@ -622,8 +668,8 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="mFG-et-5XI" id="ccZ-bi-GPp"/>
-                        <outlet property="errorLabel" destination="cfF-ti-PkF" id="SDh-DK-Bjg"/>
-                        <outlet property="errorLabelHeightConstraint" destination="Mfs-d5-BgQ" id="tps-DU-3TT"/>
+                        <outlet property="messageLabel" destination="cfF-ti-PkF" id="Rn6-5R-EEn"/>
+                        <outlet property="messageLabelHeightConstraint" destination="Mfs-d5-BgQ" id="Ttp-OD-JR1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mde-Yw-OKI" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -702,6 +748,24 @@
             </objects>
             <point key="canvasLocation" x="1636" y="1154"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="uOY-nE-eya">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FRJ-BG-Nxo" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CXy-ds-gtm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Uan-fP-LCV" kind="relationship" relationship="rootViewController" id="aLv-co-Lgh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VXD-5k-x5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2597" y="-999"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Contact Card-25" width="25" height="25"/>
@@ -711,7 +775,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Mgj-qf-OII"/>
-        <segue reference="5ha-fx-9zc"/>
+        <segue reference="hGB-hU-EzY"/>
         <segue reference="cuV-J2-Zem"/>
     </inferredMetricsTieBreakers>
 </document>

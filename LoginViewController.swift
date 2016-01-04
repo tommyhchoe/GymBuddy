@@ -14,15 +14,15 @@ import ParseFacebookUtilsV4
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var messageLabel: UILabel!
     
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var FBLoginButton: UIButton!
-    @IBOutlet weak var errorLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var messageLabelHeightConstraint: NSLayoutConstraint!
     
-    var errorLabelIsHidden = true
+    var messageLabelIsHidden = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,32 +36,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         //Make navigationItem title reappear
         self.navigationItem.title = "Sign In"
         
-        //Set errorLabel visibility
-        if (!self.errorLabelIsHidden){
-            self.errorLabel.text = "Your account has been created!"
-            self.errorLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
-            self.toggleErrorLabel()
-            self.errorLabelIsHidden = true
+        //Set messageLabel visibility
+        if !self.messageLabelIsHidden{
+            self.messageLabel.text = "Your account has been created!"
+            self.messageLabel.backgroundColor = UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)
+            self.toggleMessageLabel()
+            self.messageLabelIsHidden = true
         }
     }
     
     override func viewWillDisappear(animated: Bool) {
-        if (self.errorLabelHeightConstraint.constant == 30.0){
-            self.toggleErrorLabel()
+        if self.messageLabelHeightConstraint.constant == 30.0{
+            self.toggleMessageLabel()
         }
     }
     
     //MARK: - PrepareForSegue Method
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "registerUserSegue"){
+        if segue.identifier == "registerUserSegue"{
             self.navigationItem.title = nil
             let backItem = UIBarButtonItem()
             backItem.title = ""
             self.navigationItem.backBarButtonItem = backItem
         }
         
-        if (segue.identifier == "retrieveUserInfoSegue"){
+        if segue.identifier == "retrieveUserInfoSegue"{
             self.navigationItem.title = nil
             let backItem = UIBarButtonItem()
             backItem.title = ""
@@ -99,8 +99,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //User pressed login button
     func logInUser(){
         
-        //Hide errorLabel before checking TextFields
-        if (self.errorLabelHeightConstraint.constant == 30.0){toggleErrorLabel()}
+        //Hide messageLabel before checking TextFields
+        if self.messageLabelHeightConstraint.constant == 30.0{toggleMessageLabel()}
         
         //Disable login button
         self.navigationItem.rightBarButtonItem?.enabled = false
@@ -110,33 +110,32 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.passwordTextField.layer.borderWidth = 0.0
         
         //Check if any fields are missing first
-        if (self.usernameTextField.text == "" || self.passwordTextField.text == ""){
-            self.errorLabel.text = "Missing field!"
+        if self.usernameTextField.text == "" || self.passwordTextField.text == ""{
+            self.messageLabel.text = "Missing field!"
             
-            if (self.usernameTextField.text == ""){
+            if self.usernameTextField.text == ""{
                 self.usernameTextField.layer.borderWidth = 1.25
                 self.usernameTextField.layer.borderColor = UIColor.redColor().CGColor
             }
             
-            if (self.passwordTextField.text == ""){
+            if self.passwordTextField.text == ""{
                 self.passwordTextField.layer.borderWidth = 1.25
                 self.passwordTextField.layer.borderColor = UIColor.redColor().CGColor
             }
             
-            if (self.errorLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8)){
-                self.errorLabel.backgroundColor = UIColor.redColor()
+            if self.messageLabel.backgroundColor == UIColor(red: 0/255, green: 100/255, blue: 0/255, alpha: 0.8){
+                self.messageLabel.backgroundColor = UIColor.redColor()
             }
-            self.prepareToPresentError()
+            self.prepareToPresentMessage()
         }else{
-            PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){
-                (success, error) in
-                if (success != nil){
+            PFUser.logInWithUsernameInBackground(self.usernameTextField.text!, password: self.passwordTextField.text!){ (success, error) in
+                if success != nil{
                     self.dismissViewControllerAnimated(true, completion: nil)
                     self.loginWasSuccessful()
                     self.navigationItem.rightBarButtonItem?.enabled = true
                 }else{
-                    self.errorLabel.text = "Username/Password combination is not recognized"
-                    self.prepareToPresentError()
+                    self.messageLabel.text = "Username/Password combination is not recognized"
+                    self.prepareToPresentMessage()
                 }
             }
         }
@@ -150,20 +149,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         performSegueWithIdentifier("registerUserSegue", sender: self)
     }
     
-    func prepareToPresentError(){
+    func prepareToPresentMessage(){
         self.navigationItem.rightBarButtonItem?.enabled = true
-        self.toggleErrorLabel()
+        self.toggleMessageLabel()
     }
     
-    func toggleErrorLabel(){
-        if (self.errorLabelHeightConstraint.constant == 0.0){
+    func toggleMessageLabel(){
+        if self.messageLabelHeightConstraint.constant == 0.0{
             UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
-                self.errorLabelHeightConstraint.constant += 30.0
+                self.messageLabelHeightConstraint.constant += 30.0
                 self.view.layoutIfNeeded()
                 }, completion: nil)
         }else{
             UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveLinear, animations: { () -> Void in
-                self.errorLabelHeightConstraint.constant -= 30.0
+                self.messageLabelHeightConstraint.constant -= 30.0
                 self.view.layoutIfNeeded()
                 }, completion: nil)
         }
@@ -176,16 +175,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //MARK: - TextField Delegate Methods
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if (self.errorLabelHeightConstraint.constant == 30.0){
-            self.toggleErrorLabel()
+        if self.messageLabelHeightConstraint.constant == 30.0{
+            self.toggleMessageLabel()
         }
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if (textField.isEqual(self.usernameTextField)){
+        if textField.isEqual(self.usernameTextField){
             self.passwordTextField.becomeFirstResponder()
         }
-        if (textField.isEqual(self.passwordTextField)){
+        if textField.isEqual(self.passwordTextField){
             self.logInUser()
         }
         return true
@@ -194,18 +193,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     //MARK: - IBAction Methods
     @IBAction func FBLoginButtonPressed(sender: AnyObject) {
         PFFacebookUtils.logInInBackgroundWithReadPermissions(["public_profile", "email"]) { (user: PFUser?, error: NSError?) -> Void in
-            
             if let user = user{
                 if user.isNew{
                     print("User signed up and logged in through FB")
                 }else{
                     print("User logged in through FB")
                 }
-                self.performSegueWithIdentifier("loginUserSegue", sender: self)
+                self.dismissViewControllerAnimated(true, completion: nil)
             }else{
                 print("Uh Oh. The user cancelled the Facebook login")
-                self.errorLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
-                self.toggleErrorLabel()
+                self.messageLabel.text = "Uh Oh. Looks like you cancelled the Facebook login"
+                self.toggleMessageLabel()
             }
         }
     }

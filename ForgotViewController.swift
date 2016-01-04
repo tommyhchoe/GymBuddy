@@ -13,8 +13,8 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var emailTextField: UITextField!
 
-    @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var errorLabelHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var messageLabelHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,8 +44,8 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
     //User clicked send button
     func sendUserInfoByEmail(){
         
-        //Hide errorLabel before checking if any TextField is incomplete
-        if(self.errorLabelHeightConstraint.constant == 30.0){self.toggleErrorLabel()}
+        //Hide messageLabel before checking if any TextField is incomplete
+        if self.messageLabelHeightConstraint.constant == 30.0{self.toggleMessageLabel()}
         
         //Disable barButtonItem
         self.navigationItem.rightBarButtonItem?.enabled = false
@@ -59,52 +59,52 @@ class ForgotViewController: UIViewController, UITextFieldDelegate {
         if self.emailTextField.text == ""{
             self.emailTextField.layer.borderWidth = 1.25
             self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
-            self.errorLabel.text = "You didn't enter your email"
-            self.errorLabel.backgroundColor = UIColor.redColor()
+            self.messageLabel.text = "You didn't enter your email"
+            self.messageLabel.backgroundColor = UIColor.redColor()
         }else {
             let query = PFQuery(className: "_User")
             query.whereKey("email", equalTo: self.emailTextField.text!)
             query.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
                 if error == nil{
                     if objects!.count > 0{
-                        self.errorLabel.text = "Alright. We sent your login information"
-                        self.errorLabel.backgroundColor = greenColor
+                        self.messageLabel.text = "Alright. We sent your login information"
+                        self.messageLabel.backgroundColor = greenColor
                         
                     }else{
-                        self.errorLabel.text = "Email not found"
+                        self.messageLabel.text = "Email not found"
                         self.emailTextField.layer.borderWidth = 1.25
                         self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
-                        self.errorLabel.backgroundColor = UIColor.redColor()
+                        self.messageLabel.backgroundColor = UIColor.redColor()
                     }
                 }else{
-                    self.errorLabel.text = "Oops. There was an error. Try again please"
+                    self.messageLabel.text = "Oops. There was an error. Try again please"
                     self.emailTextField.layer.borderWidth = 1.25
                     self.emailTextField.layer.borderColor = UIColor.redColor().CGColor
-                    self.errorLabel.backgroundColor = UIColor.redColor()
+                    self.messageLabel.backgroundColor = UIColor.redColor()
                 }
             })
         }
-        self.prepareToPresentError()
+        self.prepareToPresentMessage()
     }
     
-    func prepareToPresentError(){
+    func prepareToPresentMessage(){
         self.navigationItem.rightBarButtonItem?.enabled = true
-        self.toggleErrorLabel()
+        self.toggleMessageLabel()
     }
     
-    func toggleErrorLabel(){
-        if self.errorLabelHeightConstraint.constant == 30.0{
-            self.errorLabelHeightConstraint.constant -= 30.0
+    func toggleMessageLabel(){
+        if self.messageLabelHeightConstraint.constant == 30.0{
+            self.messageLabelHeightConstraint.constant -= 30.0
         }else{
-            self.errorLabelHeightConstraint.constant += 30.0
+            self.messageLabelHeightConstraint.constant += 30.0
         }
     }
     
     //MARK: - UITextField Delegate Method(s)
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if self.errorLabelHeightConstraint.constant == 30.0{
-            self.toggleErrorLabel()
+        if self.messageLabelHeightConstraint.constant == 30.0{
+            self.toggleMessageLabel()
         }
     }
 }
