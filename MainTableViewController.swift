@@ -41,7 +41,7 @@ class MainTableViewController: UITableViewController {
     func configView(){
         
         //Setup navigationBar
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: Selector("addMyGym"))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Search, target: self, action: Selector("addMyGym"))
         self.navigationItem.title = "My Gym"
         
         //Bind sidebar menu to the menu button

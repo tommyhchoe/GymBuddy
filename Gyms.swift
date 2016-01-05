@@ -11,8 +11,8 @@ import Foundation
 class Gyms{
 
     var list = [
-        Gym(name: "Spunk Fitness", location: "Laurel, MD", profilePic: "picture1"),
-        Gym(name: "LA Fitness", location: "Columbia, MD", profilePic: "picture2"),
-        Gym(name: "Quest Fitness", location: "Silver Spring, MD", profilePic: "picture3"),
-        Gym(name: "Planet Fitness", location: "Baltimore, MD", profilePic: "picture4")]
+        Gym(name: "Spunk Fitness", location: "Laurel, MD", profilePic: "Home-25"),
+        Gym(name: "LA Fitness", location: "Columbia, MD", profilePic: "Home-25"),
+        Gym(name: "Quest Fitness", location: "Silver Spring, MD", profilePic: "Home-25"),
+        Gym(name: "Planet Fitness", location: "Baltimore, MD", profilePic: "Home-25")]
 }

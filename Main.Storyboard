@@ -152,7 +152,7 @@
                     <navigationItem key="navigationItem" id="3a9-ny-jE9"/>
                     <connections>
                         <segue destination="45x-uF-u8L" kind="presentation" identifier="showLoginSegue" id="hGB-hU-EzY"/>
-                        <segue destination="FRJ-BG-Nxo" kind="presentation" identifier="showGymSearchSegue" id="oZA-4g-KXs"/>
+                        <segue destination="wuZ-ez-Om9" kind="presentation" identifier="showGymSearchSegue" id="8CJ-ul-6Ne"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cOg-FR-dd3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -366,36 +366,28 @@
             <objects>
                 <tableViewController id="Uan-fP-LCV" customClass="GymSearchTableViewController" customModule="GymBuddy" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vck-9T-IXk">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="496"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <button key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JMp-Or-Mhw">
-                            <rect key="frame" x="0.0" y="136" width="600" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" title="Don't see your gym? Add it">
-                                <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                        </button>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="Tqz-Gf-BTY" detailTextLabel="Hj9-c6-I2w" style="IBUITableViewCellStyleValue2" id="ur9-tC-HST">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="Tqz-Gf-BTY" detailTextLabel="8v5-t0-krk" style="IBUITableViewCellStyleSubtitle" id="ur9-tC-HST">
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ur9-tC-HST" id="ecx-10-P0Q">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tqz-Gf-BTY">
-                                            <rect key="frame" x="15" y="14" width="91" height="15"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tqz-Gf-BTY">
+                                            <rect key="frame" x="15" y="5" width="32" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hj9-c6-I2w">
-                                            <rect key="frame" x="112" y="14" width="33" height="15"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8v5-t0-krk">
+                                            <rect key="frame" x="15" y="25" width="41" height="14"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -412,7 +404,74 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VSa-Vo-9N3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3409" y="-999"/>
+            <point key="canvasLocation" x="3371" y="-1825"/>
+        </scene>
+        <!--Gym Search Container View Controller-->
+        <scene sceneID="WQc-4j-Ym2">
+            <objects>
+                <viewController id="LVC-iz-YWT" customClass="GymSearchContainerViewController" customModule="GymBuddy" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lMb-Ol-vKE"/>
+                        <viewControllerLayoutGuide type="bottom" id="eeE-j0-Acs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0ap-7n-y2g">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyK-tV-qLZ">
+                                <rect key="frame" x="0.0" y="560" width="600" height="40"/>
+                                <color key="backgroundColor" red="1" green="0.1094318604" blue="0.054835341369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="I4B-CU-iUO"/>
+                                </constraints>
+                                <state key="normal" title="Create a New Gym">
+                                    <color key="titleColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="LQC-mI-gbe" kind="show" identifier="createNewGymSegue" id="Hpv-54-OG0"/>
+                                </connections>
+                            </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLk-Ch-dkW">
+                                <rect key="frame" x="0.0" y="64" width="600" height="496"/>
+                                <connections>
+                                    <segue destination="Uan-fP-LCV" kind="embed" identifier="toChildSegue" id="4nx-7X-lib"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kyK-tV-qLZ" firstAttribute="leading" secondItem="0ap-7n-y2g" secondAttribute="leading" id="ETN-Eg-s5h"/>
+                            <constraint firstItem="eLk-Ch-dkW" firstAttribute="top" secondItem="lMb-Ol-vKE" secondAttribute="bottom" id="HKX-2L-HyY"/>
+                            <constraint firstItem="kyK-tV-qLZ" firstAttribute="top" secondItem="eLk-Ch-dkW" secondAttribute="bottom" id="TUZ-pU-rVp"/>
+                            <constraint firstAttribute="trailing" secondItem="eLk-Ch-dkW" secondAttribute="trailing" id="Tke-3k-f3u"/>
+                            <constraint firstItem="eeE-j0-Acs" firstAttribute="top" secondItem="kyK-tV-qLZ" secondAttribute="bottom" id="bU5-3j-h1v"/>
+                            <constraint firstAttribute="trailing" secondItem="kyK-tV-qLZ" secondAttribute="trailing" id="ikp-Gl-hJH"/>
+                            <constraint firstItem="eLk-Ch-dkW" firstAttribute="leading" secondItem="0ap-7n-y2g" secondAttribute="leading" id="qZ0-R4-yBC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="rRc-Rg-IqM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ukx-U4-Yxr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3344" y="-1083"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="W86-sF-49x">
+            <objects>
+                <viewController id="LQC-mI-gbe" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="koS-4I-eyn"/>
+                        <viewControllerLayoutGuide type="bottom" id="YnS-SK-jo2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UYr-Vg-ZdS">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hPW-1N-yDs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4064" y="-1083"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="fQe-04-E3x">
@@ -757,22 +816,22 @@
             <point key="canvasLocation" x="1636" y="1154"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="uOY-nE-eya">
+        <scene sceneID="zNl-jO-IKJ">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="FRJ-BG-Nxo" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="wuZ-ez-Om9" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CXy-ds-gtm">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="C7w-Mg-uRh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Uan-fP-LCV" kind="relationship" relationship="rootViewController" id="aLv-co-Lgh"/>
+                        <segue destination="LVC-iz-YWT" kind="relationship" relationship="rootViewController" id="Ism-Wf-FQR"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VXD-5k-x5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zti-17-5Ip" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2529" y="-1127"/>
+            <point key="canvasLocation" x="2532" y="-1083"/>
         </scene>
     </scenes>
     <resources>
@@ -782,7 +841,7 @@
         <image name="Settings Filled-25" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cuV-J2-Zem"/>
         <segue reference="Mgj-qf-OII"/>
+        <segue reference="cuV-J2-Zem"/>
     </inferredMetricsTieBreakers>
 </document>

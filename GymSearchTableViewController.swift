@@ -8,9 +8,18 @@
 
 import UIKit
 
+protocol TableListener{
+    func needAddButton()
+    func deleteAddButton()
+}
+
 class GymSearchTableViewController: UITableViewController {
     
     var gyms = Gyms()
+    
+    var delegate: TableListener?
+    
+    var cellCheckCounter = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,21 +29,7 @@ class GymSearchTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        
-        //Setup navigationBar
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Cancel, target: self, action: Selector("cancelSearch"))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: Selector("placeholder"))
-        self.navigationItem.title = "Find your gym"
-    }
-    
-    //MARK: -Helper Methods
-    
-    func cancelSearch(){
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func placeholder(){
-        print("Something magical is being added")
+        self.delegate = GymSearchContainerViewController()
     }
 
     override func didReceiveMemoryWarning() {
@@ -67,16 +62,29 @@ class GymSearchTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+ 
+        if let cell = tableView.cellForRowAtIndexPath(indexPath){
+            if cell.accessoryType != UITableViewCellAccessoryType.Checkmark{
+                cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+                self.cellCheckCounter++
+                self.delegate!.needAddButton()
+            }else{
+                cell.accessoryType = UITableViewCellAccessoryType.None
+                self.cellCheckCounter--
+                if self.cellCheckCounter == 0{
+                    self.delegate!.deleteAddButton()
+                }
+            }
+        }
+
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
-    /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
 
     /*
     // Override to support editing the table view.
@@ -86,7 +94,7 @@ class GymSearchTableViewController: UITableViewController {
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     */
 
